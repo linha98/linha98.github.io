@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -6757,64 +6757,48 @@ const membersData = [
     "birthday": "2006-07-25",
     "period": "BEJ48十八期生",
     "debut": "2026-04-04",
-    "joinYear": "=DATEDIF(D845,E845,\"Y\")",
-    "joinDays": "=DATEDIF($D845,$E845,\"YD\")"
+    "joinYear": "19",
+    "joinDays": "253"
   },
   {
     "name": "温舒涵",
     "birthday": "2004-08-24",
     "period": "BEJ48十八期生",
     "debut": "2026-04-04",
-    "joinYear": "=DATEDIF(D846,E846,\"Y\")",
-    "joinDays": "=DATEDIF($D846,$E846,\"YD\")"
+    "joinYear": "21",
+    "joinDays": "223"
   },
   {
     "name": "王天娇",
     "birthday": "2004-04-13",
     "period": "BEJ48十八期生",
     "debut": "2026-04-04",
-    "joinYear": "=DATEDIF(D847,E847,\"Y\")",
-    "joinDays": "=DATEDIF($D847,$E847,\"YD\")"
+    "joinYear": "21",
+    "joinDays": "356"
   },
   {
     "name": "应立婷",
-    "birthday": "2022-07-18",
+    "birthday": "2008-07-18",
     "period": "BEJ48十八期生",
     "debut": "2026-04-04",
-    "joinYear": "=DATEDIF(D848,E848,\"Y\")",
-    "joinDays": "=DATEDIF($D848,$E848,\"YD\")"
+    "joinYear": "17",
+    "joinDays": "260"
   },
   {
     "name": "张宸",
     "birthday": "2004-03-07",
     "period": "BEJ48十八期生",
     "debut": "2026-04-04",
-    "joinYear": "=DATEDIF(D849,E849,\"Y\")",
-    "joinDays": "=DATEDIF($D849,$E849,\"YD\")"
+    "joinYear": "22",
+    "joinDays": "28"
   },
   {
     "name": "郑依依",
     "birthday": "2005-10-01",
     "period": "BEJ48十八期生",
     "debut": "2026-04-04",
-    "joinYear": "=DATEDIF(D850,E850,\"Y\")",
-    "joinDays": "=DATEDIF($D850,$E850,\"YD\")"
-  },
-  {
-    "name": null,
-    "birthday": null,
-    "period": null,
-    "debut": null,
-    "joinYear": null,
-    "joinDays": null
-  },
-  {
-    "name": null,
-    "birthday": null,
-    "period": null,
-    "debut": null,
-    "joinYear": null,
-    "joinDays": null
+    "joinYear": "20",
+    "joinDays": "185"
   }
 ];
     </script>
@@ -7211,7 +7195,7 @@ const membersData = [
     <div class="container">
         <div class="header">
             <h1>🎂 成员生日查询</h1>
-            <p>查看最近过生日的成员（入团时间截止 260404）</p>
+            <p>查看最近过生日的成员</p>
         </div>
 
         <div class="controls" id="controls">
@@ -7224,7 +7208,7 @@ const membersData = [
                 <select id="timeRange">
                     <option value="7">最近 7 天</option>
                     <option value="30">最近 30 天</option>
-                    <option value="999">全部</option>
+                    <option value="999" selected>全部</option>
                 </select>
             </div>
         </div>
