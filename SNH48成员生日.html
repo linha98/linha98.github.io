@@ -1,0 +1,7458 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成员生日查询</title>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script>
+// 成员生日数据 - 共 851 条
+const membersData = [
+  {
+    "name": "陈观慧",
+    "birthday": "1993-08-28",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 19,
+    "joinDays": 47
+  },
+  {
+    "name": "陈丽",
+    "birthday": "1994-12-22",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 17,
+    "joinDays": 296
+  },
+  {
+    "name": "陈思",
+    "birthday": "1991-09-14",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 21,
+    "joinDays": 30
+  },
+  {
+    "name": "戴萌",
+    "birthday": "1993-02-08",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 19,
+    "joinDays": 248
+  },
+  {
+    "name": "丁紫妍",
+    "birthday": "1995-10-06",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 17,
+    "joinDays": 8
+  },
+  {
+    "name": "董芷依",
+    "birthday": "1993-08-20",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 19,
+    "joinDays": 55
+  },
+  {
+    "name": "顾香君",
+    "birthday": "1995-10-23",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 16,
+    "joinDays": 356
+  },
+  {
+    "name": "何轶琛",
+    "birthday": "1990-01-07",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 22,
+    "joinDays": 280
+  },
+  {
+    "name": "胡美婷",
+    "birthday": "1993-05-15",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 19,
+    "joinDays": 152
+  },
+  {
+    "name": "蒋羽熙",
+    "birthday": "1996-02-18",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 16,
+    "joinDays": 239
+  },
+  {
+    "name": "孔肖吟",
+    "birthday": "1992-04-11",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 20,
+    "joinDays": 186
+  },
+  {
+    "name": "李宇琪",
+    "birthday": "1993-02-26",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 19,
+    "joinDays": 230
+  },
+  {
+    "name": "莫寒",
+    "birthday": "1992-01-07",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 20,
+    "joinDays": 281
+  },
+  {
+    "name": "钱蓓婷",
+    "birthday": "1995-05-07",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 17,
+    "joinDays": 160
+  },
+  {
+    "name": "邱欣怡",
+    "birthday": "1997-01-11",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 15,
+    "joinDays": 276
+  },
+  {
+    "name": "汤敏",
+    "birthday": "1996-09-03",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 16,
+    "joinDays": 41
+  },
+  {
+    "name": "王费澌",
+    "birthday": "1994-09-18",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 18,
+    "joinDays": 26
+  },
+  {
+    "name": "吴哲晗",
+    "birthday": "1995-08-26",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 17,
+    "joinDays": 49
+  },
+  {
+    "name": "徐晨辰",
+    "birthday": "1990-06-20",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 22,
+    "joinDays": 116
+  },
+  {
+    "name": "许佳琪",
+    "birthday": "1995-08-27",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 17,
+    "joinDays": 48
+  },
+  {
+    "name": "俞慧文",
+    "birthday": "1990-07-05",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 22,
+    "joinDays": 101
+  },
+  {
+    "name": "雨婷儿",
+    "birthday": "2000-01-28",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 12,
+    "joinDays": 260
+  },
+  {
+    "name": "曽誉嘉",
+    "birthday": "1994-03-21",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 18,
+    "joinDays": 207
+  },
+  {
+    "name": "张馨方",
+    "birthday": "1993-10-25",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 18,
+    "joinDays": 354
+  },
+  {
+    "name": "张语格",
+    "birthday": "1996-05-11",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 16,
+    "joinDays": 156
+  },
+  {
+    "name": "赵嘉敏",
+    "birthday": "1998-07-22",
+    "period": "SNH48一期生",
+    "debut": "2012-10-14",
+    "joinYear": 14,
+    "joinDays": 84
+  },
+  {
+    "name": "蒋芸",
+    "birthday": "1992-03-27",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 21,
+    "joinDays": 144
+  },
+  {
+    "name": "沈之琳",
+    "birthday": "1994-11-26",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 18,
+    "joinDays": 265
+  },
+  {
+    "name": "孙芮",
+    "birthday": "1995-07-29",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 18,
+    "joinDays": 20
+  },
+  {
+    "name": "温晶婕",
+    "birthday": "1997-03-15",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 16,
+    "joinDays": 156
+  },
+  {
+    "name": "徐子轩",
+    "birthday": "1998-03-30",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 15,
+    "joinDays": 141
+  },
+  {
+    "name": "袁雨桢",
+    "birthday": "1998-01-10",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 15,
+    "joinDays": 220
+  },
+  {
+    "name": "陈嘉瑶",
+    "birthday": "1995-07-29",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 18,
+    "joinDays": 20
+  },
+  {
+    "name": "陈佳莹",
+    "birthday": "1993-07-12",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 20,
+    "joinDays": 37
+  },
+  {
+    "name": "董艳芸",
+    "birthday": "1993-02-24",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 20,
+    "joinDays": 175
+  },
+  {
+    "name": "冯薪朵",
+    "birthday": "1992-01-24",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 21,
+    "joinDays": 207
+  },
+  {
+    "name": "龚诗淇",
+    "birthday": "1998-05-05",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 15,
+    "joinDays": 105
+  },
+  {
+    "name": "何晓玉",
+    "birthday": "1992-10-31",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 20,
+    "joinDays": 291
+  },
+  {
+    "name": "黄婷婷",
+    "birthday": "1992-09-08",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 20,
+    "joinDays": 344
+  },
+  {
+    "name": "胡思奕",
+    "birthday": "1992-03-03",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 21,
+    "joinDays": 168
+  },
+  {
+    "name": "罗兰",
+    "birthday": "1991-09-16",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 21,
+    "joinDays": 336
+  },
+  {
+    "name": "陆婷",
+    "birthday": "1992-12-18",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 20,
+    "joinDays": 243
+  },
+  {
+    "name": "吕思琴",
+    "birthday": "1994-11-09",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 18,
+    "joinDays": 282
+  },
+  {
+    "name": "孟玥",
+    "birthday": "1994-06-13",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 19,
+    "joinDays": 66
+  },
+  {
+    "name": "唐安琪",
+    "birthday": "1992-09-07",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 20,
+    "joinDays": 345
+  },
+  {
+    "name": "王佳路",
+    "birthday": "1996-03-10",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 17,
+    "joinDays": 161
+  },
+  {
+    "name": "王依君",
+    "birthday": "1995-06-06",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 18,
+    "joinDays": 73
+  },
+  {
+    "name": "徐言雨",
+    "birthday": "1993-11-10",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 19,
+    "joinDays": 281
+  },
+  {
+    "name": "杨海赆",
+    "birthday": "1996-06-06",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 17,
+    "joinDays": 73
+  },
+  {
+    "name": "杨雅如",
+    "birthday": "1995-11-15",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 17,
+    "joinDays": 276
+  },
+  {
+    "name": "易嘉爱",
+    "birthday": "1995-06-07",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 18,
+    "joinDays": 72
+  },
+  {
+    "name": "曾艳芬",
+    "birthday": "1991-01-30",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 22,
+    "joinDays": 200
+  },
+  {
+    "name": "赵粤",
+    "birthday": "1995-04-29",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 18,
+    "joinDays": 111
+  },
+  {
+    "name": "林思意",
+    "birthday": "1994-04-05",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 19,
+    "joinDays": 135
+  },
+  {
+    "name": "李艺彤",
+    "birthday": "1995-12-23",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 17,
+    "joinDays": 238
+  },
+  {
+    "name": "万丽娜",
+    "birthday": "1997-10-02",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 15,
+    "joinDays": 320
+  },
+  {
+    "name": "鞠婧祎",
+    "birthday": "1994-06-18",
+    "period": "SNH48二期生",
+    "debut": "2013-08-18",
+    "joinYear": 19,
+    "joinDays": 61
+  },
+  {
+    "name": "陈问言",
+    "birthday": "1994-01-27",
+    "period": "SNH48二期生",
+    "debut": "2014-04-17",
+    "joinYear": 20,
+    "joinDays": 80
+  },
+  {
+    "name": "宫小荷",
+    "birthday": "1996-07-11",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 18,
+    "joinDays": 15
+  },
+  {
+    "name": "袁丹妮",
+    "birthday": "1994-08-07",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 19,
+    "joinDays": 353
+  },
+  {
+    "name": "曾琳瑜",
+    "birthday": "1993-09-02",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 20,
+    "joinDays": 327
+  },
+  {
+    "name": "赵晔",
+    "birthday": "1995-08-28",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 18,
+    "joinDays": 332
+  },
+  {
+    "name": "郝婉晴",
+    "birthday": "1993-11-01",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 20,
+    "joinDays": 267
+  },
+  {
+    "name": "刘佩鑫",
+    "birthday": "1996-01-11",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 18,
+    "joinDays": 197
+  },
+  {
+    "name": "李璇",
+    "birthday": "1995-06-27",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 19,
+    "joinDays": 29
+  },
+  {
+    "name": "谢妮",
+    "birthday": "2000-02-12",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 14,
+    "joinDays": 165
+  },
+  {
+    "name": "张雨鑫",
+    "birthday": "1994-03-01",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 20,
+    "joinDays": 147
+  },
+  {
+    "name": "周淑妍",
+    "birthday": "1996-03-22",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 18,
+    "joinDays": 126
+  },
+  {
+    "name": "陈怡馨",
+    "birthday": "1996-09-17",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 17,
+    "joinDays": 312
+  },
+  {
+    "name": "韩萌",
+    "birthday": "1995-12-31",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 18,
+    "joinDays": 207
+  },
+  {
+    "name": "康欣",
+    "birthday": "1993-04-21",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 21,
+    "joinDays": 96
+  },
+  {
+    "name": "梁慧雯",
+    "birthday": "1999-09-01",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 14,
+    "joinDays": 328
+  },
+  {
+    "name": "李豆豆",
+    "birthday": "1996-10-05",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 17,
+    "joinDays": 294
+  },
+  {
+    "name": "林楠",
+    "birthday": "1994-06-23",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 20,
+    "joinDays": 33
+  },
+  {
+    "name": "李怡文",
+    "birthday": "1997-04-28",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 17,
+    "joinDays": 89
+  },
+  {
+    "name": "王柏硕",
+    "birthday": "1997-12-12",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 16,
+    "joinDays": 226
+  },
+  {
+    "name": "王璐",
+    "birthday": "1996-05-20",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 18,
+    "joinDays": 67
+  },
+  {
+    "name": "吴燕文",
+    "birthday": "1994-10-18",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 19,
+    "joinDays": 281
+  },
+  {
+    "name": "徐晗",
+    "birthday": "1993-01-15",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 21,
+    "joinDays": 192
+  },
+  {
+    "name": "许杨玉琢",
+    "birthday": "1995-09-25",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 18,
+    "joinDays": 304
+  },
+  {
+    "name": "杨吟雨",
+    "birthday": "1994-02-10",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 20,
+    "joinDays": 166
+  },
+  {
+    "name": "张昕",
+    "birthday": "1995-10-19",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 18,
+    "joinDays": 280
+  },
+  {
+    "name": "张曦尹",
+    "birthday": "1997-04-23",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 17,
+    "joinDays": 94
+  },
+  {
+    "name": "周秋均",
+    "birthday": "1995-10-02",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 18,
+    "joinDays": 297
+  },
+  {
+    "name": "李清扬",
+    "birthday": "1997-06-16",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 17,
+    "joinDays": 40
+  },
+  {
+    "name": "徐伊人",
+    "birthday": "1996-02-20",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 18,
+    "joinDays": 157
+  },
+  {
+    "name": "杨惠婷",
+    "birthday": "1998-04-08",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 16,
+    "joinDays": 109
+  },
+  {
+    "name": "刘炅然",
+    "birthday": "1994-09-02",
+    "period": "SNH48三期生",
+    "debut": "2014-07-26",
+    "joinYear": 19,
+    "joinDays": 327
+  },
+  {
+    "name": "邵雪聪",
+    "birthday": "1996-08-28",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 18,
+    "joinDays": 156
+  },
+  {
+    "name": "陈琳",
+    "birthday": "1998-07-23",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 16,
+    "joinDays": 192
+  },
+  {
+    "name": "冯晓菲",
+    "birthday": "1995-10-17",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 19,
+    "joinDays": 106
+  },
+  {
+    "name": "李晶",
+    "birthday": "1995-06-07",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 19,
+    "joinDays": 238
+  },
+  {
+    "name": "李钊",
+    "birthday": "1997-05-23",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 17,
+    "joinDays": 253
+  },
+  {
+    "name": "宋昕冉",
+    "birthday": "1997-07-08",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 17,
+    "joinDays": 207
+  },
+  {
+    "name": "孙静怡",
+    "birthday": "1992-07-08",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 22,
+    "joinDays": 207
+  },
+  {
+    "name": "孙歆文",
+    "birthday": "1995-11-04",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 19,
+    "joinDays": 88
+  },
+  {
+    "name": "汪佳翎",
+    "birthday": "1999-07-13",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 15,
+    "joinDays": 202
+  },
+  {
+    "name": "汪束",
+    "birthday": "1997-05-08",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 17,
+    "joinDays": 268
+  },
+  {
+    "name": "王晓佳",
+    "birthday": "1993-05-31",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 21,
+    "joinDays": 245
+  },
+  {
+    "name": "谢天依",
+    "birthday": "1998-06-24",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 16,
+    "joinDays": 221
+  },
+  {
+    "name": "杨冰怡",
+    "birthday": "2000-07-26",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 14,
+    "joinDays": 189
+  },
+  {
+    "name": "杨韫玉",
+    "birthday": "1995-09-15",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 19,
+    "joinDays": 138
+  },
+  {
+    "name": "张丹三",
+    "birthday": "1995-09-15",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 19,
+    "joinDays": 138
+  },
+  {
+    "name": "张韵雯",
+    "birthday": "1998-02-26",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 16,
+    "joinDays": 339
+  },
+  {
+    "name": "闫明筠",
+    "birthday": "1998-02-11",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 16,
+    "joinDays": 354
+  },
+  {
+    "name": "张瑾",
+    "birthday": "1998-07-23",
+    "period": "SNH48四期生",
+    "debut": "2015-01-31",
+    "joinYear": 16,
+    "joinDays": 192
+  },
+  {
+    "name": "刘力玮",
+    "birthday": "1997-07-25",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 18,
+    "joinDays": 0
+  },
+  {
+    "name": "刘增艳",
+    "birthday": "1996-08-31",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 18,
+    "joinDays": 328
+  },
+  {
+    "name": "申月姣",
+    "birthday": "1996-09-10",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 18,
+    "joinDays": 318
+  },
+  {
+    "name": "刘诗蕾",
+    "birthday": "1996-03-22",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 19,
+    "joinDays": 125
+  },
+  {
+    "name": "严佼君",
+    "birthday": "1995-04-29",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 20,
+    "joinDays": 87
+  },
+  {
+    "name": "张怡",
+    "birthday": "1994-06-22",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 21,
+    "joinDays": 33
+  },
+  {
+    "name": "周怡",
+    "birthday": "1993-06-13",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 22,
+    "joinDays": 42
+  },
+  {
+    "name": "费沁源",
+    "birthday": "2001-03-20",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 14,
+    "joinDays": 127
+  },
+  {
+    "name": "洪珮雲",
+    "birthday": "2001-01-07",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 14,
+    "joinDays": 199
+  },
+  {
+    "name": "姜杉",
+    "birthday": "1995-10-06",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 19,
+    "joinDays": 292
+  },
+  {
+    "name": "蒋舒婷",
+    "birthday": "2002-06-18",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 13,
+    "joinDays": 37
+  },
+  {
+    "name": "沈梦瑶",
+    "birthday": "1998-08-14",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 345
+  },
+  {
+    "name": "宋雨珊",
+    "birthday": "1999-06-14",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 41
+  },
+  {
+    "name": "袁航",
+    "birthday": "1996-05-20",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 19,
+    "joinDays": 66
+  },
+  {
+    "name": "潘瑛琪",
+    "birthday": "1998-09-27",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 301
+  },
+  {
+    "name": "陈音",
+    "birthday": "1999-12-05",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 15,
+    "joinDays": 232
+  },
+  {
+    "name": "时语婕",
+    "birthday": "1998-04-04",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 17,
+    "joinDays": 112
+  },
+  {
+    "name": "邹佳佳",
+    "birthday": "1998-10-28",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 270
+  },
+  {
+    "name": "张文静",
+    "birthday": "1998-01-14",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 17,
+    "joinDays": 192
+  },
+  {
+    "name": "陈韫凌",
+    "birthday": "1997-12-13",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 17,
+    "joinDays": 224
+  },
+  {
+    "name": "王露皎",
+    "birthday": "1995-02-17",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 20,
+    "joinDays": 158
+  },
+  {
+    "name": "於佳怡",
+    "birthday": "1998-10-29",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 269
+  },
+  {
+    "name": "陈美君",
+    "birthday": "1994-01-15",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 21,
+    "joinDays": 191
+  },
+  {
+    "name": "段艺璇",
+    "birthday": "1995-08-19",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 19,
+    "joinDays": 340
+  },
+  {
+    "name": "冯雪莹",
+    "birthday": "1994-03-13",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 21,
+    "joinDays": 134
+  },
+  {
+    "name": "胡晓慧",
+    "birthday": "1998-09-16",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 312
+  },
+  {
+    "name": "宋思娴",
+    "birthday": "1997-10-09",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 17,
+    "joinDays": 289
+  },
+  {
+    "name": "田姝丽",
+    "birthday": "1996-11-09",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 18,
+    "joinDays": 258
+  },
+  {
+    "name": "熊素君",
+    "birthday": "1994-09-09",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 20,
+    "joinDays": 319
+  },
+  {
+    "name": "徐佳丽",
+    "birthday": "1996-09-21",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 18,
+    "joinDays": 307
+  },
+  {
+    "name": "张菡筱",
+    "birthday": "1996-06-26",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 19,
+    "joinDays": 29
+  },
+  {
+    "name": "陈珂",
+    "birthday": "1995-08-09",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 19,
+    "joinDays": 350
+  },
+  {
+    "name": "陈雨琪",
+    "birthday": "2000-12-16",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 14,
+    "joinDays": 221
+  },
+  {
+    "name": "杜雨微",
+    "birthday": "1999-03-17",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 130
+  },
+  {
+    "name": "高源婧",
+    "birthday": "1999-07-06",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 19
+  },
+  {
+    "name": "林嘉佩",
+    "birthday": "1998-08-16",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 343
+  },
+  {
+    "name": "李沁洁",
+    "birthday": "1999-02-12",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 163
+  },
+  {
+    "name": "刘梦雅",
+    "birthday": "1997-03-24",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 18,
+    "joinDays": 123
+  },
+  {
+    "name": "刘筱筱",
+    "birthday": "2000-11-01",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 14,
+    "joinDays": 266
+  },
+  {
+    "name": "谢蕾蕾",
+    "birthday": "1998-12-01",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 236
+  },
+  {
+    "name": "阳青颖",
+    "birthday": "2001-08-27",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 13,
+    "joinDays": 332
+  },
+  {
+    "name": "曾艾佳",
+    "birthday": "1995-07-11",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 20,
+    "joinDays": 14
+  },
+  {
+    "name": "张凯祺",
+    "birthday": "1998-11-02",
+    "period": "SNH48五期生",
+    "debut": "2015-07-25",
+    "joinYear": 16,
+    "joinDays": 265
+  },
+  {
+    "name": "邓艳秋菲",
+    "birthday": "1995-07-30",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 20,
+    "joinDays": 172
+  },
+  {
+    "name": "钱艺",
+    "birthday": "1998-06-07",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 17,
+    "joinDays": 225
+  },
+  {
+    "name": "孙珍妮",
+    "birthday": "2000-05-05",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 15,
+    "joinDays": 258
+  },
+  {
+    "name": "林忆宁",
+    "birthday": "1997-07-17",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 18,
+    "joinDays": 185
+  },
+  {
+    "name": "张嘉予",
+    "birthday": "2001-06-15",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 14,
+    "joinDays": 217
+  },
+  {
+    "name": "张琼予",
+    "birthday": "1997-01-21",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 18,
+    "joinDays": 362
+  },
+  {
+    "name": "程文路",
+    "birthday": "2000-04-05",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 15,
+    "joinDays": 288
+  },
+  {
+    "name": "成珏",
+    "birthday": "1997-01-03",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 19,
+    "joinDays": 15
+  },
+  {
+    "name": "黄彤扬",
+    "birthday": "1998-01-28",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 17,
+    "joinDays": 355
+  },
+  {
+    "name": "吕梦莹",
+    "birthday": "2000-07-28",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 15,
+    "joinDays": 174
+  },
+  {
+    "name": "李佳恩",
+    "birthday": "2000-06-17",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 15,
+    "joinDays": 215
+  },
+  {
+    "name": "冯嘉希",
+    "birthday": "1996-06-04",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 19,
+    "joinDays": 228
+  },
+  {
+    "name": "罗雪丽",
+    "birthday": "2000-06-06",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 15,
+    "joinDays": 226
+  },
+  {
+    "name": "郑一凡",
+    "birthday": "2001-05-09",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 14,
+    "joinDays": 254
+  },
+  {
+    "name": "胡博文",
+    "birthday": "1999-12-18",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 16,
+    "joinDays": 31
+  },
+  {
+    "name": "林溪荷",
+    "birthday": "1998-06-20",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 17,
+    "joinDays": 212
+  },
+  {
+    "name": "刘姝贤",
+    "birthday": "1994-04-16",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 21,
+    "joinDays": 277
+  },
+  {
+    "name": "牛聪聪",
+    "birthday": "1996-04-02",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 19,
+    "joinDays": 291
+  },
+  {
+    "name": "青钰雯",
+    "birthday": "1997-01-18",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 19,
+    "joinDays": 0
+  },
+  {
+    "name": "孙姗",
+    "birthday": "1999-02-11",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 16,
+    "joinDays": 341
+  },
+  {
+    "name": "文妍",
+    "birthday": "2000-12-28",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 15,
+    "joinDays": 21
+  },
+  {
+    "name": "夏越",
+    "birthday": "1995-08-26",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 20,
+    "joinDays": 145
+  },
+  {
+    "name": "张梦慧",
+    "birthday": "1998-12-03",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 17,
+    "joinDays": 46
+  },
+  {
+    "name": "毕梦媛",
+    "birthday": "1997-01-29",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 18,
+    "joinDays": 354
+  },
+  {
+    "name": "陈姣荷",
+    "birthday": "1995-04-20",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 20,
+    "joinDays": 273
+  },
+  {
+    "name": "陈倩楠",
+    "birthday": "1998-03-19",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 17,
+    "joinDays": 305
+  },
+  {
+    "name": "冯思佳",
+    "birthday": "1999-01-03",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 17,
+    "joinDays": 15
+  },
+  {
+    "name": "林堃",
+    "birthday": "1996-10-30",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 19,
+    "joinDays": 80
+  },
+  {
+    "name": "李诗彦",
+    "birthday": "2003-03-17",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 12,
+    "joinDays": 307
+  },
+  {
+    "name": "刘胜男",
+    "birthday": "1997-09-09",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 18,
+    "joinDays": 131
+  },
+  {
+    "name": "李想",
+    "birthday": "1994-02-05",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 21,
+    "joinDays": 347
+  },
+  {
+    "name": "李媛媛",
+    "birthday": "1995-04-20",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 20,
+    "joinDays": 273
+  },
+  {
+    "name": "李梓",
+    "birthday": "2000-08-30",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 15,
+    "joinDays": 141
+  },
+  {
+    "name": "马玉灵",
+    "birthday": "1999-10-06",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 16,
+    "joinDays": 104
+  },
+  {
+    "name": "苏杉杉",
+    "birthday": "1997-03-23",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 18,
+    "joinDays": 301
+  },
+  {
+    "name": "顼凘炀",
+    "birthday": "2000-03-22",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 15,
+    "joinDays": 302
+  },
+  {
+    "name": "易妍倩",
+    "birthday": "1997-11-28",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 18,
+    "joinDays": 51
+  },
+  {
+    "name": "张笑盈",
+    "birthday": "1995-08-21",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 20,
+    "joinDays": 150
+  },
+  {
+    "name": "胡怡莹",
+    "birthday": "1997-03-19",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 18,
+    "joinDays": 305
+  },
+  {
+    "name": "罗寒月",
+    "birthday": "1996-04-27",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 19,
+    "joinDays": 266
+  },
+  {
+    "name": "王馨悦",
+    "birthday": "1994-07-19",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 21,
+    "joinDays": 183
+  },
+  {
+    "name": "周倩玉",
+    "birthday": "2000-04-18",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 15,
+    "joinDays": 275
+  },
+  {
+    "name": "陈慧婧",
+    "birthday": "1997-01-13",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 19,
+    "joinDays": 5
+  },
+  {
+    "name": "陈楠茜",
+    "birthday": "1995-06-12",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 20,
+    "joinDays": 220
+  },
+  {
+    "name": "陈欣妤",
+    "birthday": "1999-06-05",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 16,
+    "joinDays": 227
+  },
+  {
+    "name": "洪静雯",
+    "birthday": "1996-10-14",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 19,
+    "joinDays": 96
+  },
+  {
+    "name": "刘力菲",
+    "birthday": "1995-10-30",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 20,
+    "joinDays": 80
+  },
+  {
+    "name": "刘倩倩",
+    "birthday": "1994-11-28",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 21,
+    "joinDays": 51
+  },
+  {
+    "name": "卢静",
+    "birthday": "1994-11-05",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 21,
+    "joinDays": 74
+  },
+  {
+    "name": "孙馨",
+    "birthday": "1997-02-27",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 18,
+    "joinDays": 325
+  },
+  {
+    "name": "唐莉佳",
+    "birthday": "1996-01-18",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 20,
+    "joinDays": 0
+  },
+  {
+    "name": "冼燊楠",
+    "birthday": "2001-11-09",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 14,
+    "joinDays": 70
+  },
+  {
+    "name": "肖文铃",
+    "birthday": "2001-01-24",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 14,
+    "joinDays": 359
+  },
+  {
+    "name": "熊心瑶",
+    "birthday": "1996-01-19",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 19,
+    "joinDays": 365
+  },
+  {
+    "name": "郑丹妮",
+    "birthday": "2001-01-26",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 14,
+    "joinDays": 357
+  },
+  {
+    "name": "左嘉欣",
+    "birthday": "1996-09-01",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 19,
+    "joinDays": 139
+  },
+  {
+    "name": "左婧媛",
+    "birthday": "1998-08-19",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 17,
+    "joinDays": 152
+  },
+  {
+    "name": "王金铭",
+    "birthday": "1996-07-18",
+    "period": "SNH48六期生",
+    "debut": "2016-01-18",
+    "joinYear": 19,
+    "joinDays": 184
+  },
+  {
+    "name": "李泓瑶",
+    "birthday": "2000-03-30",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 16,
+    "joinDays": 108
+  },
+  {
+    "name": "任玥霖",
+    "birthday": "2001-10-23",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 14,
+    "joinDays": 266
+  },
+  {
+    "name": "许婉玉",
+    "birthday": "2000-10-12",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 15,
+    "joinDays": 278
+  },
+  {
+    "name": "张韩紫陌",
+    "birthday": "2000-01-31",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 16,
+    "joinDays": 167
+  },
+  {
+    "name": "陈逸菲",
+    "birthday": "1994-06-18",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 22,
+    "joinDays": 28
+  },
+  {
+    "name": "吴月黎",
+    "birthday": "1996-05-15",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 20,
+    "joinDays": 62
+  },
+  {
+    "name": "李娜",
+    "birthday": "1996-05-01",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 20,
+    "joinDays": 76
+  },
+  {
+    "name": "杨一帆",
+    "birthday": "1997-05-17",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 19,
+    "joinDays": 60
+  },
+  {
+    "name": "陈雅钰",
+    "birthday": "1996-10-04",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 19,
+    "joinDays": 286
+  },
+  {
+    "name": "房蕾",
+    "birthday": "1997-07-21",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 18,
+    "joinDays": 360
+  },
+  {
+    "name": "葛司琪",
+    "birthday": "1997-09-08",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 18,
+    "joinDays": 311
+  },
+  {
+    "name": "黄恩茹",
+    "birthday": "1997-05-05",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 19,
+    "joinDays": 72
+  },
+  {
+    "name": "刘闲",
+    "birthday": "1997-09-27",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 18,
+    "joinDays": 292
+  },
+  {
+    "name": "任心怡",
+    "birthday": "1996-10-18",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 19,
+    "joinDays": 272
+  },
+  {
+    "name": "单习文",
+    "birthday": "1997-01-31",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 19,
+    "joinDays": 166
+  },
+  {
+    "name": "石羽莎",
+    "birthday": "2002-06-20",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 14,
+    "joinDays": 26
+  },
+  {
+    "name": "孙语姗",
+    "birthday": "2000-09-13",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 15,
+    "joinDays": 307
+  },
+  {
+    "name": "王雨煊",
+    "birthday": "1999-05-23",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 17,
+    "joinDays": 54
+  },
+  {
+    "name": "杨晔",
+    "birthday": "1998-03-23",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 18,
+    "joinDays": 115
+  },
+  {
+    "name": "叶苗苗",
+    "birthday": "1999-07-13",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 17,
+    "joinDays": 3
+  },
+  {
+    "name": "张怀瑾",
+    "birthday": "1997-05-11",
+    "period": "BEJ48一期生",
+    "debut": "2016-07-16",
+    "joinYear": 19,
+    "joinDays": 66
+  },
+  {
+    "name": "赵韩倩",
+    "birthday": "2000-07-13",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 16,
+    "joinDays": 64
+  },
+  {
+    "name": "江真仪",
+    "birthday": "2001-02-08",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 15,
+    "joinDays": 219
+  },
+  {
+    "name": "刘菊子",
+    "birthday": "1998-12-12",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 17,
+    "joinDays": 277
+  },
+  {
+    "name": "徐真",
+    "birthday": "2001-03-23",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 15,
+    "joinDays": 176
+  },
+  {
+    "name": "张雅梦",
+    "birthday": "1996-04-21",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 20,
+    "joinDays": 147
+  },
+  {
+    "name": "袁一琦",
+    "birthday": "2000-03-19",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 16,
+    "joinDays": 180
+  },
+  {
+    "name": "曾晓雯",
+    "birthday": "1998-03-25",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 18,
+    "joinDays": 174
+  },
+  {
+    "name": "吕一",
+    "birthday": "1997-06-27",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 19,
+    "joinDays": 80
+  },
+  {
+    "name": "祁静",
+    "birthday": "1998-07-19",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 18,
+    "joinDays": 58
+  },
+  {
+    "name": "徐诗琪",
+    "birthday": "1998-12-10",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 17,
+    "joinDays": 279
+  },
+  {
+    "name": "刘瀛",
+    "birthday": "1998-02-08",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 18,
+    "joinDays": 219
+  },
+  {
+    "name": "潘燕琦",
+    "birthday": "1997-05-25",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 19,
+    "joinDays": 113
+  },
+  {
+    "name": "姚祎纯",
+    "birthday": "2000-04-28",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 16,
+    "joinDays": 140
+  },
+  {
+    "name": "许逸",
+    "birthday": "1995-10-07",
+    "period": "SNH48七期生",
+    "debut": "2016-09-15",
+    "joinYear": 20,
+    "joinDays": 343
+  },
+  {
+    "name": "黄黎蓉",
+    "birthday": "1999-01-23",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-01",
+    "joinYear": 17,
+    "joinDays": 251
+  },
+  {
+    "name": "向芸",
+    "birthday": "1999-06-10",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-01",
+    "joinYear": 17,
+    "joinDays": 113
+  },
+  {
+    "name": "戴欣佚",
+    "birthday": "2001-12-17",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-02",
+    "joinYear": 14,
+    "joinDays": 289
+  },
+  {
+    "name": "李伊虹",
+    "birthday": "2000-10-13",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-02",
+    "joinYear": 15,
+    "joinDays": 355
+  },
+  {
+    "name": "陈桂君",
+    "birthday": "1997-10-08",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 19,
+    "joinDays": 15
+  },
+  {
+    "name": "陈梓荧",
+    "birthday": "1999-01-07",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 17,
+    "joinDays": 289
+  },
+  {
+    "name": "代玲",
+    "birthday": "1999-07-27",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 17,
+    "joinDays": 88
+  },
+  {
+    "name": "杜秋霖",
+    "birthday": "1998-08-24",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 18,
+    "joinDays": 60
+  },
+  {
+    "name": "刘嘉怡",
+    "birthday": "2002-07-19",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 14,
+    "joinDays": 96
+  },
+  {
+    "name": "龙亦瑞",
+    "birthday": "1995-10-02",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 21,
+    "joinDays": 21
+  },
+  {
+    "name": "农燕萍",
+    "birthday": "1994-07-30",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 22,
+    "joinDays": 85
+  },
+  {
+    "name": "王芊诺",
+    "birthday": "2000-02-21",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 16,
+    "joinDays": 245
+  },
+  {
+    "name": "王炯义",
+    "birthday": "2000-06-05",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 16,
+    "joinDays": 140
+  },
+  {
+    "name": "王偲越",
+    "birthday": "2001-02-19",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 15,
+    "joinDays": 246
+  },
+  {
+    "name": "王盈",
+    "birthday": "1997-06-15",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 19,
+    "joinDays": 130
+  },
+  {
+    "name": "王秭歆",
+    "birthday": "2000-10-03",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 16,
+    "joinDays": 20
+  },
+  {
+    "name": "杨可璐",
+    "birthday": "1999-08-10",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 17,
+    "joinDays": 74
+  },
+  {
+    "name": "杨媛媛",
+    "birthday": "1996-12-17",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 19,
+    "joinDays": 311
+  },
+  {
+    "name": "于珊珊",
+    "birthday": "2000-10-03",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 16,
+    "joinDays": 20
+  },
+  {
+    "name": "张心雨",
+    "birthday": "1996-03-24",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 20,
+    "joinDays": 213
+  },
+  {
+    "name": "赵欣雨",
+    "birthday": "2001-07-10",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 15,
+    "joinDays": 105
+  },
+  {
+    "name": "赵翊民",
+    "birthday": "1997-08-18",
+    "period": "GNZ48一期生",
+    "debut": "2016-10-23",
+    "joinYear": 19,
+    "joinDays": 66
+  },
+  {
+    "name": "卢天惠",
+    "birthday": "2000-12-08",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 15,
+    "joinDays": 326
+  },
+  {
+    "name": "王诗蒙",
+    "birthday": "1995-11-01",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 20,
+    "joinDays": 362
+  },
+  {
+    "name": "赵佳蕊",
+    "birthday": "2000-11-19",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 15,
+    "joinDays": 345
+  },
+  {
+    "name": "刘静晗",
+    "birthday": "1999-10-04",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 17,
+    "joinDays": 25
+  },
+  {
+    "name": "冯译莹",
+    "birthday": "1999-03-24",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 17,
+    "joinDays": 219
+  },
+  {
+    "name": "付紫琪",
+    "birthday": "1998-08-31",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 18,
+    "joinDays": 59
+  },
+  {
+    "name": "高志娴",
+    "birthday": "1998-10-01",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 18,
+    "joinDays": 28
+  },
+  {
+    "name": "李慧",
+    "birthday": "1996-11-08",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 19,
+    "joinDays": 356
+  },
+  {
+    "name": "李晴",
+    "birthday": "1999-09-09",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 17,
+    "joinDays": 50
+  },
+  {
+    "name": "曲悦萌",
+    "birthday": "1995-08-31",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 21,
+    "joinDays": 59
+  },
+  {
+    "name": "孙敏",
+    "birthday": "1998-02-25",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 18,
+    "joinDays": 246
+  },
+  {
+    "name": "徐斐然",
+    "birthday": "1995-03-04",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 21,
+    "joinDays": 239
+  },
+  {
+    "name": "杨允涵",
+    "birthday": "1995-04-16",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 21,
+    "joinDays": 196
+  },
+  {
+    "name": "张爱静",
+    "birthday": "1996-08-03",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 20,
+    "joinDays": 87
+  },
+  {
+    "name": "韩家乐",
+    "birthday": "1996-04-24",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 20,
+    "joinDays": 188
+  },
+  {
+    "name": "郑洁丽",
+    "birthday": "1995-06-21",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 21,
+    "joinDays": 130
+  },
+  {
+    "name": "赖梓惜",
+    "birthday": "2002-09-06",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 14,
+    "joinDays": 53
+  },
+  {
+    "name": "陈婧文",
+    "birthday": "1998-04-22",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 18,
+    "joinDays": 190
+  },
+  {
+    "name": "关思雨",
+    "birthday": "1997-08-29",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 19,
+    "joinDays": 61
+  },
+  {
+    "name": "刘娇",
+    "birthday": "1996-11-07",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 19,
+    "joinDays": 357
+  },
+  {
+    "name": "刘娜",
+    "birthday": "1996-11-07",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 19,
+    "joinDays": 357
+  },
+  {
+    "name": "南翎璞",
+    "birthday": "1998-12-12",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 17,
+    "joinDays": 321
+  },
+  {
+    "name": "秦玺",
+    "birthday": "1997-10-09",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 19,
+    "joinDays": 20
+  },
+  {
+    "name": "徐静妍",
+    "birthday": "2000-06-16",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 16,
+    "joinDays": 135
+  },
+  {
+    "name": "朱燕",
+    "birthday": "1995-08-20",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 21,
+    "joinDays": 70
+  },
+  {
+    "name": "董思佳",
+    "birthday": "1997-08-15",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 19,
+    "joinDays": 75
+  },
+  {
+    "name": "寇承希",
+    "birthday": "1998-11-20",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 17,
+    "joinDays": 343
+  },
+  {
+    "name": "李熙凝",
+    "birthday": "2000-10-13",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 16,
+    "joinDays": 16
+  },
+  {
+    "name": "任雨情",
+    "birthday": "1998-11-06",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 17,
+    "joinDays": 357
+  },
+  {
+    "name": "杨肖",
+    "birthday": "1997-01-30",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 19,
+    "joinDays": 272
+  },
+  {
+    "name": "张儒轶",
+    "birthday": "1996-02-26",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 20,
+    "joinDays": 246
+  },
+  {
+    "name": "张幼柠",
+    "birthday": "2001-10-27",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 15,
+    "joinDays": 2
+  },
+  {
+    "name": "张云梦",
+    "birthday": "1998-12-11",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 17,
+    "joinDays": 322
+  },
+  {
+    "name": "张雨晴",
+    "birthday": "1996-09-15",
+    "period": "SHY48一期生",
+    "debut": "2016-10-29",
+    "joinYear": 20,
+    "joinDays": 44
+  },
+  {
+    "name": "兰昊",
+    "birthday": "1996-02-27",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 21,
+    "joinDays": 12
+  },
+  {
+    "name": "毛其羽",
+    "birthday": "1998-12-01",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 18,
+    "joinDays": 100
+  },
+  {
+    "name": "乔钰珂",
+    "birthday": "2000-03-23",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 16,
+    "joinDays": 353
+  },
+  {
+    "name": "胡丽芝",
+    "birthday": "1998-10-08",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 18,
+    "joinDays": 154
+  },
+  {
+    "name": "李沐遥",
+    "birthday": "2000-08-03",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 16,
+    "joinDays": 220
+  },
+  {
+    "name": "刘崇恬",
+    "birthday": "1995-09-17",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 21,
+    "joinDays": 175
+  },
+  {
+    "name": "沈小爱",
+    "birthday": "1995-12-07",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 21,
+    "joinDays": 94
+  },
+  {
+    "name": "孙晓艳",
+    "birthday": "1998-11-29",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 18,
+    "joinDays": 102
+  },
+  {
+    "name": "郑依灵",
+    "birthday": "1998-11-08",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 18,
+    "joinDays": 123
+  },
+  {
+    "name": "黄子璇",
+    "birthday": "2002-05-20",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 14,
+    "joinDays": 295
+  },
+  {
+    "name": "李烨",
+    "birthday": "1998-06-17",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 18,
+    "joinDays": 267
+  },
+  {
+    "name": "徐静",
+    "birthday": "1997-09-26",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 19,
+    "joinDays": 166
+  },
+  {
+    "name": "赵笛儿",
+    "birthday": "2000-09-04",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 16,
+    "joinDays": 188
+  },
+  {
+    "name": "金锣赛",
+    "birthday": "1997-07-04",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 19,
+    "joinDays": 250
+  },
+  {
+    "name": "刘一菲",
+    "birthday": "1996-12-07",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 20,
+    "joinDays": 94
+  },
+  {
+    "name": "郑心雨",
+    "birthday": "2001-04-27",
+    "period": "BEJ48二期生",
+    "debut": "2017-03-11",
+    "joinYear": 15,
+    "joinDays": 318
+  },
+  {
+    "name": "赖俊亦",
+    "birthday": "2002-07-28",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 14,
+    "joinDays": 275
+  },
+  {
+    "name": "梁可",
+    "birthday": "1999-03-23",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 18,
+    "joinDays": 37
+  },
+  {
+    "name": "程一心",
+    "birthday": "1996-06-19",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 20,
+    "joinDays": 314
+  },
+  {
+    "name": "陈佳莹",
+    "birthday": "2002-08-16",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 14,
+    "joinDays": 256
+  },
+  {
+    "name": "陈俊宏",
+    "birthday": "2000-09-28",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 16,
+    "joinDays": 213
+  },
+  {
+    "name": "陈乐添",
+    "birthday": "1996-06-19",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 20,
+    "joinDays": 314
+  },
+  {
+    "name": "方晓瑜",
+    "birthday": "1996-03-04",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 21,
+    "joinDays": 56
+  },
+  {
+    "name": "刘小末",
+    "birthday": "1998-11-26",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 18,
+    "joinDays": 154
+  },
+  {
+    "name": "朱怡欣",
+    "birthday": "1998-04-22",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 19,
+    "joinDays": 7
+  },
+  {
+    "name": "高雪逸",
+    "birthday": "2000-10-27",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 16,
+    "joinDays": 184
+  },
+  {
+    "name": "唐诗怡",
+    "birthday": "1997-07-16",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 19,
+    "joinDays": 287
+  },
+  {
+    "name": "谢艾琳",
+    "birthday": "1996-12-28",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 20,
+    "joinDays": 122
+  },
+  {
+    "name": "郑悦",
+    "birthday": "1997-08-11",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 19,
+    "joinDays": 261
+  },
+  {
+    "name": "张秋怡",
+    "birthday": "1999-10-12",
+    "period": "GNZ48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 17,
+    "joinDays": 199
+  },
+  {
+    "name": "王菲妍",
+    "birthday": "1999-01-27",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 18,
+    "joinDays": 92
+  },
+  {
+    "name": "高崇",
+    "birthday": "2002-11-16",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 14,
+    "joinDays": 164
+  },
+  {
+    "name": "郑诗琪",
+    "birthday": "1999-07-05",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 17,
+    "joinDays": 298
+  },
+  {
+    "name": "张羽涵",
+    "birthday": "1996-03-20",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 21,
+    "joinDays": 40
+  },
+  {
+    "name": "臧聪",
+    "birthday": "1998-02-21",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 19,
+    "joinDays": 67
+  },
+  {
+    "name": "陈奕君",
+    "birthday": "1998-07-01",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 18,
+    "joinDays": 302
+  },
+  {
+    "name": "菅瑞静",
+    "birthday": "1996-03-07",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 21,
+    "joinDays": 53
+  },
+  {
+    "name": "叶锦童",
+    "birthday": "2000-02-17",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 17,
+    "joinDays": 72
+  },
+  {
+    "name": "方诗涵",
+    "birthday": "1997-11-28",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 19,
+    "joinDays": 152
+  },
+  {
+    "name": "龚梦婷",
+    "birthday": "1998-03-02",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 19,
+    "joinDays": 58
+  },
+  {
+    "name": "逯芳竹",
+    "birthday": "2002-09-19",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 14,
+    "joinDays": 222
+  },
+  {
+    "name": "王睿琦",
+    "birthday": "1999-12-15",
+    "period": "SHY48二期生",
+    "debut": "2017-04-29",
+    "joinYear": 17,
+    "joinDays": 135
+  },
+  {
+    "name": "葛佳慧",
+    "birthday": "1995-08-01",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 21,
+    "joinDays": 300
+  },
+  {
+    "name": "郭倩芸",
+    "birthday": "1997-04-04",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 20,
+    "joinDays": 54
+  },
+  {
+    "name": "金莹玥",
+    "birthday": "1996-05-27",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 21,
+    "joinDays": 1
+  },
+  {
+    "name": "马凡",
+    "birthday": "1996-03-20",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 21,
+    "joinDays": 69
+  },
+  {
+    "name": "陶波尔",
+    "birthday": "1998-06-20",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 18,
+    "joinDays": 342
+  },
+  {
+    "name": "姜涵",
+    "birthday": "1997-11-24",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 19,
+    "joinDays": 185
+  },
+  {
+    "name": "王奕",
+    "birthday": "2001-06-06",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 15,
+    "joinDays": 356
+  },
+  {
+    "name": "文文",
+    "birthday": "1995-05-31",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 21,
+    "joinDays": 362
+  },
+  {
+    "name": "赵梦婷",
+    "birthday": "1997-06-06",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 19,
+    "joinDays": 356
+  },
+  {
+    "name": "贺苏堃",
+    "birthday": "1995-11-14",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 21,
+    "joinDays": 195
+  },
+  {
+    "name": "许嘉怡",
+    "birthday": "2002-06-27",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 14,
+    "joinDays": 335
+  },
+  {
+    "name": "林歆源",
+    "birthday": "1999-06-02",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 17,
+    "joinDays": 360
+  },
+  {
+    "name": "孙亚萍",
+    "birthday": "1999-07-06",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 17,
+    "joinDays": 326
+  },
+  {
+    "name": "熊沁娴",
+    "birthday": "1999-08-07",
+    "period": "SNH48八期生",
+    "debut": "2017-05-28",
+    "joinYear": 17,
+    "joinDays": 294
+  },
+  {
+    "name": "程子钰",
+    "birthday": "1999-04-29",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 18,
+    "joinDays": 155
+  },
+  {
+    "name": "符冰冰",
+    "birthday": "2000-08-21",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 17,
+    "joinDays": 41
+  },
+  {
+    "name": "黄楚茵",
+    "birthday": "2000-01-20",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 17,
+    "joinDays": 255
+  },
+  {
+    "name": "林芝",
+    "birthday": "1999-11-21",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 17,
+    "joinDays": 314
+  },
+  {
+    "name": "罗可嘉",
+    "birthday": "2002-02-02",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 15,
+    "joinDays": 241
+  },
+  {
+    "name": "吴羽霏",
+    "birthday": "2000-07-28",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 17,
+    "joinDays": 65
+  },
+  {
+    "name": "毕瑞珊",
+    "birthday": "2003-01-13",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 14,
+    "joinDays": 261
+  },
+  {
+    "name": "何梦瑶",
+    "birthday": "1998-05-12",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 19,
+    "joinDays": 142
+  },
+  {
+    "name": "梁婉琳",
+    "birthday": "1998-10-12",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 18,
+    "joinDays": 354
+  },
+  {
+    "name": "叶晓梦",
+    "birthday": "2002-11-29",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 14,
+    "joinDays": 306
+  },
+  {
+    "name": "余芷媛",
+    "birthday": "2002-12-08",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 14,
+    "joinDays": 297
+  },
+  {
+    "name": "邓惠恩",
+    "birthday": "1998-03-23",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 19,
+    "joinDays": 192
+  },
+  {
+    "name": "汪慕远",
+    "birthday": "1997-12-26",
+    "period": "GNZ48三期生",
+    "debut": "2017-10-01",
+    "joinYear": 19,
+    "joinDays": 279
+  },
+  {
+    "name": "郝婧怡",
+    "birthday": "1999-02-23",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 18,
+    "joinDays": 246
+  },
+  {
+    "name": "林舒晴",
+    "birthday": "2000-05-28",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 17,
+    "joinDays": 152
+  },
+  {
+    "name": "冉蔚",
+    "birthday": "1999-05-21",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 18,
+    "joinDays": 159
+  },
+  {
+    "name": "刘弋菡",
+    "birthday": "2001-05-21",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 16,
+    "joinDays": 159
+  },
+  {
+    "name": "韩林芹",
+    "birthday": "1997-04-21",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 20,
+    "joinDays": 189
+  },
+  {
+    "name": "黄琬璎",
+    "birthday": "1998-03-24",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 19,
+    "joinDays": 217
+  },
+  {
+    "name": "雷宇霄",
+    "birthday": "2001-11-03",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 15,
+    "joinDays": 358
+  },
+  {
+    "name": "毛译晗",
+    "birthday": "1999-11-27",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 17,
+    "joinDays": 334
+  },
+  {
+    "name": "孟玥",
+    "birthday": "2003-03-11",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 14,
+    "joinDays": 230
+  },
+  {
+    "name": "谯玉珍",
+    "birthday": "1996-12-26",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 20,
+    "joinDays": 305
+  },
+  {
+    "name": "田倩兰",
+    "birthday": "1998-01-17",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 19,
+    "joinDays": 283
+  },
+  {
+    "name": "田祯臻",
+    "birthday": "2002-03-03",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 15,
+    "joinDays": 238
+  },
+  {
+    "name": "王梦竹",
+    "birthday": "1995-12-29",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 21,
+    "joinDays": 302
+  },
+  {
+    "name": "王娱博",
+    "birthday": "1998-07-10",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 19,
+    "joinDays": 109
+  },
+  {
+    "name": "伍寒琪",
+    "birthday": "2000-04-07",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 17,
+    "joinDays": 203
+  },
+  {
+    "name": "吴晶晶",
+    "birthday": "1998-06-30",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 19,
+    "joinDays": 119
+  },
+  {
+    "name": "吴学雨",
+    "birthday": "1999-04-15",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 18,
+    "joinDays": 195
+  },
+  {
+    "name": "曾佳",
+    "birthday": "1999-10-24",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 18,
+    "joinDays": 3
+  },
+  {
+    "name": "赵泽慧",
+    "birthday": "1998-04-25",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 19,
+    "joinDays": 185
+  },
+  {
+    "name": "左欣",
+    "birthday": "2000-12-14",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 16,
+    "joinDays": 317
+  },
+  {
+    "name": "李瑜璇",
+    "birthday": "1997-11-07",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 19,
+    "joinDays": 354
+  },
+  {
+    "name": "柏欣妤",
+    "birthday": "1997-01-25",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 20,
+    "joinDays": 275
+  },
+  {
+    "name": "李姗姗",
+    "birthday": "1998-04-08",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 19,
+    "joinDays": 202
+  },
+  {
+    "name": "李恩锐",
+    "birthday": "1995-05-18",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 22,
+    "joinDays": 162
+  },
+  {
+    "name": "李泽亚",
+    "birthday": "1997-12-27",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 19,
+    "joinDays": 304
+  },
+  {
+    "name": "陶菀瑞",
+    "birthday": "1997-06-25",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 20,
+    "joinDays": 124
+  },
+  {
+    "name": "周源",
+    "birthday": "1999-10-24",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 18,
+    "joinDays": 3
+  },
+  {
+    "name": "艾芷亦",
+    "birthday": "2000-05-08",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 17,
+    "joinDays": 172
+  },
+  {
+    "name": "樊曦月",
+    "birthday": "1996-02-22",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 21,
+    "joinDays": 248
+  },
+  {
+    "name": "石勤",
+    "birthday": "1998-12-04",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 18,
+    "joinDays": 327
+  },
+  {
+    "name": "夏文倩",
+    "birthday": "1998-09-20",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 19,
+    "joinDays": 37
+  },
+  {
+    "name": "章宇阳",
+    "birthday": "1998-08-18",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 19,
+    "joinDays": 70
+  },
+  {
+    "name": "郑阳莹",
+    "birthday": "1998-09-16",
+    "period": "CKG48一期生",
+    "debut": "2017-10-27",
+    "joinYear": 19,
+    "joinDays": 41
+  },
+  {
+    "name": "徐佳音",
+    "birthday": "2000-08-18",
+    "period": "GNZ48四期生",
+    "debut": "2017-11-23",
+    "joinYear": 17,
+    "joinDays": 97
+  },
+  {
+    "name": "舒湘",
+    "birthday": "2002-07-23",
+    "period": "GNZ48四期生",
+    "debut": "2017-11-23",
+    "joinYear": 15,
+    "joinDays": 123
+  },
+  {
+    "name": "张紫颖",
+    "birthday": "2003-03-16",
+    "period": "GNZ48四期生",
+    "debut": "2017-11-23",
+    "joinYear": 14,
+    "joinDays": 252
+  },
+  {
+    "name": "李晨曦",
+    "birthday": "2000-09-01",
+    "period": "GNZ48四期生",
+    "debut": "2017-11-23",
+    "joinYear": 17,
+    "joinDays": 83
+  },
+  {
+    "name": "王梦媛",
+    "birthday": "2004-08-27",
+    "period": "GNZ48四期生",
+    "debut": "2017-11-23",
+    "joinYear": 13,
+    "joinDays": 88
+  },
+  {
+    "name": "肖文静",
+    "birthday": "2002-10-21",
+    "period": "GNZ48四期生",
+    "debut": "2017-11-23",
+    "joinYear": 15,
+    "joinDays": 33
+  },
+  {
+    "name": "杨鑫",
+    "birthday": "1995-11-23",
+    "period": "BEJ48三期生",
+    "debut": "2018-01-19",
+    "joinYear": 22,
+    "joinDays": 57
+  },
+  {
+    "name": "周洁艺",
+    "birthday": "1998-10-29",
+    "period": "BEJ48三期生",
+    "debut": "2018-01-19",
+    "joinYear": 19,
+    "joinDays": 82
+  },
+  {
+    "name": "金鑫",
+    "birthday": "2000-09-02",
+    "period": "BEJ48三期生",
+    "debut": "2018-01-19",
+    "joinYear": 17,
+    "joinDays": 139
+  },
+  {
+    "name": "李娜",
+    "birthday": "1997-09-22",
+    "period": "BEJ48三期生",
+    "debut": "2018-01-19",
+    "joinYear": 20,
+    "joinDays": 119
+  },
+  {
+    "name": "李宗颐",
+    "birthday": "1996-09-25",
+    "period": "BEJ48三期生",
+    "debut": "2018-01-19",
+    "joinYear": 21,
+    "joinDays": 116
+  },
+  {
+    "name": "何阳青青",
+    "birthday": "1997-07-21",
+    "period": "BEJ48三期生",
+    "debut": "2018-01-19",
+    "joinYear": 20,
+    "joinDays": 182
+  },
+  {
+    "name": "杨令仪",
+    "birthday": "1997-04-15",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 20,
+    "joinDays": 294
+  },
+  {
+    "name": "朱小丹",
+    "birthday": "2000-05-21",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 17,
+    "joinDays": 258
+  },
+  {
+    "name": "李美琪",
+    "birthday": "2001-05-29",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 16,
+    "joinDays": 250
+  },
+  {
+    "name": "张茜",
+    "birthday": "1996-08-27",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 21,
+    "joinDays": 160
+  },
+  {
+    "name": "周诗雨",
+    "birthday": "1998-04-11",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 19,
+    "joinDays": 298
+  },
+  {
+    "name": "陈盼",
+    "birthday": "1998-11-04",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 19,
+    "joinDays": 91
+  },
+  {
+    "name": "李玉倩",
+    "birthday": "1997-05-28",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 20,
+    "joinDays": 251
+  },
+  {
+    "name": "王欣颜甜甜",
+    "birthday": "2001-09-13",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 16,
+    "joinDays": 143
+  },
+  {
+    "name": "李星羽",
+    "birthday": "2000-02-06",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 17,
+    "joinDays": 363
+  },
+  {
+    "name": "王溪源",
+    "birthday": "1998-05-16",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 19,
+    "joinDays": 263
+  },
+  {
+    "name": "张馨月",
+    "birthday": "1996-04-04",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 21,
+    "joinDays": 305
+  },
+  {
+    "name": "杨美琪",
+    "birthday": "1999-08-12",
+    "period": "SNH48九期生",
+    "debut": "2018-02-03",
+    "joinYear": 18,
+    "joinDays": 175
+  },
+  {
+    "name": "陈俊羽",
+    "birthday": "2002-11-16",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 15,
+    "joinDays": 121
+  },
+  {
+    "name": "刁滢",
+    "birthday": "1998-11-24",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 19,
+    "joinDays": 113
+  },
+  {
+    "name": "黄嘉怡",
+    "birthday": "2002-04-05",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 15,
+    "joinDays": 346
+  },
+  {
+    "name": "李苏洪",
+    "birthday": "1995-06-20",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 22,
+    "joinDays": 270
+  },
+  {
+    "name": "司珀琳",
+    "birthday": "1996-10-18",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 21,
+    "joinDays": 150
+  },
+  {
+    "name": "相望",
+    "birthday": "1998-10-11",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 19,
+    "joinDays": 157
+  },
+  {
+    "name": "周佳怡",
+    "birthday": "2000-08-12",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 17,
+    "joinDays": 217
+  },
+  {
+    "name": "朱敏",
+    "birthday": "2000-06-01",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 17,
+    "joinDays": 289
+  },
+  {
+    "name": "程戈",
+    "birthday": "1997-10-27",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 20,
+    "joinDays": 141
+  },
+  {
+    "name": "赵天杨",
+    "birthday": "1995-12-25",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 22,
+    "joinDays": 82
+  },
+  {
+    "name": "王嘉瑜",
+    "birthday": "2002-05-02",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 15,
+    "joinDays": 319
+  },
+  {
+    "name": "王雨兰",
+    "birthday": "2002-01-09",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 16,
+    "joinDays": 67
+  },
+  {
+    "name": "唐霖",
+    "birthday": "1999-03-21",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 18,
+    "joinDays": 361
+  },
+  {
+    "name": "李彬玉",
+    "birthday": "2001-09-06",
+    "period": "SHY48三期生",
+    "debut": "2018-03-17",
+    "joinYear": 16,
+    "joinDays": 192
+  },
+  {
+    "name": "戴紫薇",
+    "birthday": "1998-02-20",
+    "period": "CKG48二期生",
+    "debut": "2018-04-07",
+    "joinYear": 20,
+    "joinDays": 46
+  },
+  {
+    "name": "魏小燕",
+    "birthday": "1999-02-21",
+    "period": "CKG48二期生",
+    "debut": "2018-04-07",
+    "joinYear": 19,
+    "joinDays": 45
+  },
+  {
+    "name": "周桐冉",
+    "birthday": "1994-06-04",
+    "period": "CKG48二期生",
+    "debut": "2018-04-07",
+    "joinYear": 23,
+    "joinDays": 307
+  },
+  {
+    "name": "徐楚雯",
+    "birthday": "1999-10-26",
+    "period": "CKG48二期生",
+    "debut": "2018-04-07",
+    "joinYear": 18,
+    "joinDays": 163
+  },
+  {
+    "name": "徐慧玲",
+    "birthday": "1997-10-21",
+    "period": "CKG48二期生",
+    "debut": "2018-04-07",
+    "joinYear": 20,
+    "joinDays": 168
+  },
+  {
+    "name": "吴晓桐",
+    "birthday": "1998-12-07",
+    "period": "CKG48二期生",
+    "debut": "2018-04-07",
+    "joinYear": 19,
+    "joinDays": 121
+  },
+  {
+    "name": "余梦露",
+    "birthday": "1996-12-30",
+    "period": "CKG48二期生",
+    "debut": "2018-04-07",
+    "joinYear": 21,
+    "joinDays": 98
+  },
+  {
+    "name": "邹冰清",
+    "birthday": "2000-11-01",
+    "period": "CKG48二期生",
+    "debut": "2018-04-07",
+    "joinYear": 17,
+    "joinDays": 157
+  },
+  {
+    "name": "李清雨",
+    "birthday": "1998-04-06",
+    "period": "BEJ48四期生",
+    "debut": "2018-04-20",
+    "joinYear": 20,
+    "joinDays": 14
+  },
+  {
+    "name": "杨宇馨",
+    "birthday": "1998-11-07",
+    "period": "BEJ48四期生",
+    "debut": "2018-04-20",
+    "joinYear": 19,
+    "joinDays": 164
+  },
+  {
+    "name": "曲美霖",
+    "birthday": "1996-11-18",
+    "period": "BEJ48四期生",
+    "debut": "2018-04-20",
+    "joinYear": 21,
+    "joinDays": 153
+  },
+  {
+    "name": "高蔚然",
+    "birthday": "1998-10-08",
+    "period": "BEJ48四期生",
+    "debut": "2018-04-20",
+    "joinYear": 19,
+    "joinDays": 194
+  },
+  {
+    "name": "彭嘉敏",
+    "birthday": "1999-09-29",
+    "period": "BEJ48四期生",
+    "debut": "2018-04-20",
+    "joinYear": 18,
+    "joinDays": 203
+  },
+  {
+    "name": "熊鑫",
+    "birthday": "1998-04-12",
+    "period": "BEJ48四期生",
+    "debut": "2018-04-20",
+    "joinYear": 20,
+    "joinDays": 8
+  },
+  {
+    "name": "张丹丹",
+    "birthday": "1998-10-02",
+    "period": "BEJ48四期生",
+    "debut": "2018-04-20",
+    "joinYear": 19,
+    "joinDays": 200
+  },
+  {
+    "name": "楼澍",
+    "birthday": "2001-02-20",
+    "period": "BEJ48四期生",
+    "debut": "2018-04-20",
+    "joinYear": 17,
+    "joinDays": 59
+  },
+  {
+    "name": "周湘",
+    "birthday": "2001-03-18",
+    "period": "BEJ48四期生",
+    "debut": "2018-04-20",
+    "joinYear": 17,
+    "joinDays": 33
+  },
+  {
+    "name": "付奕萱",
+    "birthday": "2001-01-19",
+    "period": "BEJ48四期生",
+    "debut": "2018-04-20",
+    "joinYear": 17,
+    "joinDays": 91
+  },
+  {
+    "name": "门秀天",
+    "birthday": "2004-01-06",
+    "period": "GNZ48五期生",
+    "debut": "2018-04-29",
+    "joinYear": 14,
+    "joinDays": 114
+  },
+  {
+    "name": "章泽婷",
+    "birthday": "2002-10-29",
+    "period": "GNZ48五期生",
+    "debut": "2018-04-29",
+    "joinYear": 15,
+    "joinDays": 182
+  },
+  {
+    "name": "梁娇",
+    "birthday": "2003-11-01",
+    "period": "GNZ48五期生",
+    "debut": "2018-04-29",
+    "joinYear": 14,
+    "joinDays": 179
+  },
+  {
+    "name": "郭铱宁",
+    "birthday": "2000-09-08",
+    "period": "GNZ48五期生",
+    "debut": "2018-04-29",
+    "joinYear": 17,
+    "joinDays": 233
+  },
+  {
+    "name": "梁乔",
+    "birthday": "2003-11-01",
+    "period": "GNZ48五期生",
+    "debut": "2018-04-29",
+    "joinYear": 14,
+    "joinDays": 179
+  },
+  {
+    "name": "谢菲菲",
+    "birthday": "2000-01-18",
+    "period": "GNZ48五期生",
+    "debut": "2018-04-29",
+    "joinYear": 18,
+    "joinDays": 102
+  },
+  {
+    "name": "刘洁",
+    "birthday": "1995-08-01",
+    "period": "SNH48十期生",
+    "debut": "2018-05-18",
+    "joinYear": 22,
+    "joinDays": 290
+  },
+  {
+    "name": "栾嘉仪",
+    "birthday": "1999-11-26",
+    "period": "SNH48十期生",
+    "debut": "2018-05-18",
+    "joinYear": 18,
+    "joinDays": 173
+  },
+  {
+    "name": "戚予珠",
+    "birthday": "1999-06-19",
+    "period": "SNH48十期生",
+    "debut": "2018-05-18",
+    "joinYear": 18,
+    "joinDays": 333
+  },
+  {
+    "name": "鲁静萍",
+    "birthday": "2002-06-03",
+    "period": "SNH48十期生",
+    "debut": "2018-05-18",
+    "joinYear": 15,
+    "joinDays": 349
+  },
+  {
+    "name": "周睿林",
+    "birthday": "2004-06-01",
+    "period": "SNH48十期生",
+    "debut": "2018-05-18",
+    "joinYear": 13,
+    "joinDays": 351
+  },
+  {
+    "name": "张敏淇",
+    "birthday": "2000-12-17",
+    "period": "SNH48十期生",
+    "debut": "2018-05-18",
+    "joinYear": 17,
+    "joinDays": 152
+  },
+  {
+    "name": "程宇璐",
+    "birthday": "1999-02-17",
+    "period": "BEJ48五期生",
+    "debut": "2018-06-07",
+    "joinYear": 19,
+    "joinDays": 110
+  },
+  {
+    "name": "李丽满",
+    "birthday": "1999-11-01",
+    "period": "BEJ48五期生",
+    "debut": "2018-06-07",
+    "joinYear": 18,
+    "joinDays": 218
+  },
+  {
+    "name": "任蔓琳",
+    "birthday": "1998-02-21",
+    "period": "BEJ48五期生",
+    "debut": "2018-06-07",
+    "joinYear": 20,
+    "joinDays": 106
+  },
+  {
+    "name": "郭爽",
+    "birthday": "2000-06-19",
+    "period": "CKG48三期生",
+    "debut": "2018-09-01",
+    "joinYear": 18,
+    "joinDays": 74
+  },
+  {
+    "name": "曹露丹",
+    "birthday": "1998-05-23",
+    "period": "CKG48三期生",
+    "debut": "2018-09-01",
+    "joinYear": 20,
+    "joinDays": 101
+  },
+  {
+    "name": "康兆薇",
+    "birthday": "2003-02-09",
+    "period": "CKG48三期生",
+    "debut": "2018-09-01",
+    "joinYear": 15,
+    "joinDays": 204
+  },
+  {
+    "name": "彭榆涵",
+    "birthday": "1999-01-18",
+    "period": "CKG48三期生",
+    "debut": "2018-09-01",
+    "joinYear": 19,
+    "joinDays": 226
+  },
+  {
+    "name": "田密",
+    "birthday": "2002-01-15",
+    "period": "CKG48三期生",
+    "debut": "2018-09-01",
+    "joinYear": 16,
+    "joinDays": 229
+  },
+  {
+    "name": "赵思雨",
+    "birthday": "2001-05-07",
+    "period": "CKG48三期生",
+    "debut": "2018-09-01",
+    "joinYear": 17,
+    "joinDays": 117
+  },
+  {
+    "name": "方琪",
+    "birthday": "1999-06-12",
+    "period": "CKG48三期生",
+    "debut": "2018-09-01",
+    "joinYear": 19,
+    "joinDays": 81
+  },
+  {
+    "name": "叶舒淇",
+    "birthday": "1999-10-25",
+    "period": "GNZ48六期生",
+    "debut": "2018-10-05",
+    "joinYear": 18,
+    "joinDays": 345
+  },
+  {
+    "name": "邓熳慧",
+    "birthday": "2000-09-22",
+    "period": "GNZ48六期生",
+    "debut": "2018-10-05",
+    "joinYear": 18,
+    "joinDays": 13
+  },
+  {
+    "name": "张润",
+    "birthday": "2001-11-15",
+    "period": "GNZ48六期生",
+    "debut": "2018-10-05",
+    "joinYear": 16,
+    "joinDays": 324
+  },
+  {
+    "name": "鄢羽蝶",
+    "birthday": "2000-05-10",
+    "period": "GNZ48六期生",
+    "debut": "2018-10-05",
+    "joinYear": 18,
+    "joinDays": 148
+  },
+  {
+    "name": "王秋茹",
+    "birthday": "2003-10-02",
+    "period": "SHY48四期生",
+    "debut": "2018-10-05",
+    "joinYear": 15,
+    "joinDays": 3
+  },
+  {
+    "name": "卞佳宁",
+    "birthday": "2005-10-14",
+    "period": "SHY48四期生",
+    "debut": "2018-10-05",
+    "joinYear": 12,
+    "joinDays": 356
+  },
+  {
+    "name": "程一",
+    "birthday": "1998-12-09",
+    "period": "SHY48四期生",
+    "debut": "2018-10-05",
+    "joinYear": 19,
+    "joinDays": 300
+  },
+  {
+    "name": "冯嘉宝",
+    "birthday": "2000-08-20",
+    "period": "SHY48四期生",
+    "debut": "2018-10-05",
+    "joinYear": 18,
+    "joinDays": 46
+  },
+  {
+    "name": "刘宇晴",
+    "birthday": "2001-03-29",
+    "period": "SHY48四期生",
+    "debut": "2018-10-05",
+    "joinYear": 17,
+    "joinDays": 190
+  },
+  {
+    "name": "尚官",
+    "birthday": "2000-04-15",
+    "period": "SHY48四期生",
+    "debut": "2018-10-05",
+    "joinYear": 18,
+    "joinDays": 173
+  },
+  {
+    "name": "王永祺",
+    "birthday": "2001-07-05",
+    "period": "SHY48四期生",
+    "debut": "2018-10-05",
+    "joinYear": 17,
+    "joinDays": 92
+  },
+  {
+    "name": "王梓",
+    "birthday": "1999-12-23",
+    "period": "SHY48四期生",
+    "debut": "2018-10-05",
+    "joinYear": 18,
+    "joinDays": 286
+  },
+  {
+    "name": "武晓迪",
+    "birthday": "2002-09-06",
+    "period": "SHY48四期生",
+    "debut": "2018-10-05",
+    "joinYear": 16,
+    "joinDays": 29
+  },
+  {
+    "name": "张瑾瑜",
+    "birthday": "2001-07-10",
+    "period": "SHY48四期生",
+    "debut": "2018-10-05",
+    "joinYear": 17,
+    "joinDays": 87
+  },
+  {
+    "name": "黄逸",
+    "birthday": "2000-03-23",
+    "period": "SHY48四期生",
+    "debut": "2018-10-05",
+    "joinYear": 18,
+    "joinDays": 196
+  },
+  {
+    "name": "颜沁",
+    "birthday": "1999-11-23",
+    "period": "SNH48十一期生",
+    "debut": "2018-11-02",
+    "joinYear": 18,
+    "joinDays": 344
+  },
+  {
+    "name": "李海淋",
+    "birthday": "2000-11-30",
+    "period": "BEJ48六期生",
+    "debut": "2019-01-03",
+    "joinYear": 18,
+    "joinDays": 34
+  },
+  {
+    "name": "熊依依",
+    "birthday": "2000-10-05",
+    "period": "BEJ48六期生",
+    "debut": "2019-01-03",
+    "joinYear": 18,
+    "joinDays": 90
+  },
+  {
+    "name": "张语倩",
+    "birthday": "2000-04-03",
+    "period": "BEJ48六期生",
+    "debut": "2019-01-03",
+    "joinYear": 18,
+    "joinDays": 275
+  },
+  {
+    "name": "陈雨孜",
+    "birthday": "1998-06-29",
+    "period": "SNH48十二期生",
+    "debut": "2019-09-14",
+    "joinYear": 21,
+    "joinDays": 77
+  },
+  {
+    "name": "江鑫",
+    "birthday": "2003-01-18",
+    "period": "SNH48十二期生",
+    "debut": "2019-09-14",
+    "joinYear": 16,
+    "joinDays": 239
+  },
+  {
+    "name": "潘璐瑶",
+    "birthday": "1999-07-10",
+    "period": "SNH48十二期生",
+    "debut": "2019-09-14",
+    "joinYear": 20,
+    "joinDays": 66
+  },
+  {
+    "name": "刘丽千",
+    "birthday": "2000-07-13",
+    "period": "SNH48十二期生",
+    "debut": "2019-09-14",
+    "joinYear": 19,
+    "joinDays": 63
+  },
+  {
+    "name": "吴思琪",
+    "birthday": "2000-10-30",
+    "period": "GNZ48七期生",
+    "debut": "2019-09-15",
+    "joinYear": 18,
+    "joinDays": 320
+  },
+  {
+    "name": "刘果",
+    "birthday": "2003-12-15",
+    "period": "GNZ48七期生",
+    "debut": "2019-09-15",
+    "joinYear": 15,
+    "joinDays": 274
+  },
+  {
+    "name": "马昕玥",
+    "birthday": "2004-02-19",
+    "period": "GNZ48七期生",
+    "debut": "2019-09-15",
+    "joinYear": 15,
+    "joinDays": 209
+  },
+  {
+    "name": "莫昕",
+    "birthday": "1998-10-07",
+    "period": "GNZ48七期生",
+    "debut": "2019-09-15",
+    "joinYear": 20,
+    "joinDays": 343
+  },
+  {
+    "name": "陈亿杉",
+    "birthday": "1998-06-29",
+    "period": "BEJ48七期生",
+    "debut": "2019-09-15",
+    "joinYear": 21,
+    "joinDays": 78
+  },
+  {
+    "name": "曾洁",
+    "birthday": "1995-12-10",
+    "period": "BEJ48七期生",
+    "debut": "2019-09-28",
+    "joinYear": 23,
+    "joinDays": 292
+  },
+  {
+    "name": "张智杰",
+    "birthday": "1998-06-20",
+    "period": "BEJ48七期生",
+    "debut": "2019-09-28",
+    "joinYear": 21,
+    "joinDays": 100
+  },
+  {
+    "name": "吕蕊",
+    "birthday": "2000-05-24",
+    "period": "BEJ48七期生",
+    "debut": "2019-10-25",
+    "joinYear": 19,
+    "joinDays": 154
+  },
+  {
+    "name": "宁轲",
+    "birthday": "2000-05-02",
+    "period": "BEJ48七期生",
+    "debut": "2019-10-25",
+    "joinYear": 19,
+    "joinDays": 176
+  },
+  {
+    "name": "熊文婕",
+    "birthday": "2000-01-23",
+    "period": "BEJ48七期生",
+    "debut": "2019-11-29",
+    "joinYear": 19,
+    "joinDays": 311
+  },
+  {
+    "name": "杜亚轩",
+    "birthday": "1995-08-18",
+    "period": "BEJ48七期生",
+    "debut": "2019-11-29",
+    "joinYear": 24,
+    "joinDays": 103
+  },
+  {
+    "name": "张睿婕",
+    "birthday": "1998-05-07",
+    "period": "SNH48十三期生",
+    "debut": "2019-11-17",
+    "joinYear": 21,
+    "joinDays": 194
+  },
+  {
+    "name": "由淼",
+    "birthday": "1998-08-05",
+    "period": "SNH48十三期生",
+    "debut": "2019-11-29",
+    "joinYear": 21,
+    "joinDays": 116
+  },
+  {
+    "name": "王贝妮",
+    "birthday": "1996-01-16",
+    "period": "SNH48十三期生",
+    "debut": "2019-11-29",
+    "joinYear": 23,
+    "joinDays": 318
+  },
+  {
+    "name": "王若诗蓝",
+    "birthday": "1998-03-17",
+    "period": "BEJ48八期生",
+    "debut": "2020-04-21",
+    "joinYear": 22,
+    "joinDays": 35
+  },
+  {
+    "name": "张睿怡",
+    "birthday": "1999-10-16",
+    "period": "BEJ48八期生",
+    "debut": "2020-04-21",
+    "joinYear": 20,
+    "joinDays": 187
+  },
+  {
+    "name": "张书瑀",
+    "birthday": "1999-11-23",
+    "period": "GNZ48八期生",
+    "debut": "2020-06-13",
+    "joinYear": 20,
+    "joinDays": 202
+  },
+  {
+    "name": "石竹君",
+    "birthday": "1999-12-25",
+    "period": "GNZ48八期生",
+    "debut": "2020-06-13",
+    "joinYear": 20,
+    "joinDays": 170
+  },
+  {
+    "name": "杨若惜",
+    "birthday": "2000-02-04",
+    "period": "GNZ48八期生",
+    "debut": "2020-06-13",
+    "joinYear": 20,
+    "joinDays": 130
+  },
+  {
+    "name": "吕曼菲",
+    "birthday": "2007-03-25",
+    "period": "GNZ48八期生",
+    "debut": "2020-10-01",
+    "joinYear": 13,
+    "joinDays": 190
+  },
+  {
+    "name": "谢慧先",
+    "birthday": "2002-05-11",
+    "period": "GNZ48八期生",
+    "debut": "2020-10-01",
+    "joinYear": 18,
+    "joinDays": 143
+  },
+  {
+    "name": "涂秀文",
+    "birthday": "2003-10-18",
+    "period": "CKG48四期生",
+    "debut": "2020-06-27",
+    "joinYear": 16,
+    "joinDays": 252
+  },
+  {
+    "name": "余芸萱",
+    "birthday": "2000-09-04",
+    "period": "CKG48四期生",
+    "debut": "2020-06-27",
+    "joinYear": 19,
+    "joinDays": 297
+  },
+  {
+    "name": "梁晶金",
+    "birthday": "1999-02-11",
+    "period": "CKG48四期生",
+    "debut": "2020-06-27",
+    "joinYear": 21,
+    "joinDays": 136
+  },
+  {
+    "name": "潘颖",
+    "birthday": "2001-04-06",
+    "period": "CKG48四期生",
+    "debut": "2020-08-29",
+    "joinYear": 19,
+    "joinDays": 145
+  },
+  {
+    "name": "陈妮亚",
+    "birthday": "2004-03-25",
+    "period": "CKG48四期生",
+    "debut": "2020-08-29",
+    "joinYear": 16,
+    "joinDays": 157
+  },
+  {
+    "name": "黄歆源",
+    "birthday": "2000-08-09",
+    "period": "CKG48四期生",
+    "debut": "2020-08-29",
+    "joinYear": 20,
+    "joinDays": 20
+  },
+  {
+    "name": "闫娜",
+    "birthday": "1998-07-27",
+    "period": "SNH48十四期生",
+    "debut": "2020-10-02",
+    "joinYear": 22,
+    "joinDays": 67
+  },
+  {
+    "name": "李星彦",
+    "birthday": "2000-03-29",
+    "period": "SNH48十四期生",
+    "debut": "2020-10-02",
+    "joinYear": 20,
+    "joinDays": 187
+  },
+  {
+    "name": "邓歆玥",
+    "birthday": "2005-04-20",
+    "period": "SNH48十四期生",
+    "debut": "2020-10-02",
+    "joinYear": 15,
+    "joinDays": 165
+  },
+  {
+    "name": "曲晨语",
+    "birthday": "2006-11-19",
+    "period": "SNH48十四期生",
+    "debut": "2020-10-02",
+    "joinYear": 13,
+    "joinDays": 317
+  },
+  {
+    "name": "冯雨停",
+    "birthday": "1998-09-17",
+    "period": "SNH48十四期生",
+    "debut": "2020-10-03",
+    "joinYear": 22,
+    "joinDays": 16
+  },
+  {
+    "name": "陆叶卉",
+    "birthday": "1998-07-14",
+    "period": "SNH48十四期生",
+    "debut": "2020-10-03",
+    "joinYear": 22,
+    "joinDays": 81
+  },
+  {
+    "name": "刘晨雪",
+    "birthday": "2000-06-19",
+    "period": "SNH48十四期生",
+    "debut": "2020-10-03",
+    "joinYear": 20,
+    "joinDays": 106
+  },
+  {
+    "name": "卞楚娴",
+    "birthday": "1998-03-23",
+    "period": "SNH48十四期生",
+    "debut": "2020-10-03",
+    "joinYear": 22,
+    "joinDays": 194
+  },
+  {
+    "name": "陈蓁蓁",
+    "birthday": "2000-05-12",
+    "period": "BEJ48九期生",
+    "debut": "2020-11-22",
+    "joinYear": 20,
+    "joinDays": 194
+  },
+  {
+    "name": "范璐元",
+    "birthday": "2000-01-13",
+    "period": "BEJ48九期生",
+    "debut": "2020-11-22",
+    "joinYear": 20,
+    "joinDays": 314
+  },
+  {
+    "name": "胡雪迎",
+    "birthday": "1998-06-27",
+    "period": "BEJ48九期生",
+    "debut": "2020-11-22",
+    "joinYear": 22,
+    "joinDays": 148
+  },
+  {
+    "name": "黄宣绮",
+    "birthday": "2004-09-10",
+    "period": "BEJ48九期生",
+    "debut": "2020-11-22",
+    "joinYear": 16,
+    "joinDays": 73
+  },
+  {
+    "name": "黄怡慈",
+    "birthday": "2004-09-10",
+    "period": "BEJ48九期生",
+    "debut": "2020-11-22",
+    "joinYear": 16,
+    "joinDays": 73
+  },
+  {
+    "name": "黄妍菲",
+    "birthday": "2001-03-19",
+    "period": "BEJ48九期生",
+    "debut": "2020-11-22",
+    "joinYear": 19,
+    "joinDays": 248
+  },
+  {
+    "name": "唐晨葳",
+    "birthday": "1998-06-13",
+    "period": "BEJ48九期生",
+    "debut": "2020-11-22",
+    "joinYear": 22,
+    "joinDays": 162
+  },
+  {
+    "name": "张宸祎",
+    "birthday": "1999-01-05",
+    "period": "BEJ48九期生",
+    "debut": "2020-11-22",
+    "joinYear": 21,
+    "joinDays": 321
+  },
+  {
+    "name": "赵嘉丽",
+    "birthday": "2001-10-07",
+    "period": "BEJ48九期生",
+    "debut": "2020-11-22",
+    "joinYear": 19,
+    "joinDays": 46
+  },
+  {
+    "name": "江雨航",
+    "birthday": "1998-06-06",
+    "period": "GNZ48九期生",
+    "debut": "2021-01-01",
+    "joinYear": 22,
+    "joinDays": 209
+  },
+  {
+    "name": "姜欣瑶",
+    "birthday": "2000-12-27",
+    "period": "GNZ48九期生",
+    "debut": "2021-01-01",
+    "joinYear": 20,
+    "joinDays": 5
+  },
+  {
+    "name": "吕思琪",
+    "birthday": "1999-11-28",
+    "period": "GNZ48九期生",
+    "debut": "2021-01-01",
+    "joinYear": 21,
+    "joinDays": 34
+  },
+  {
+    "name": "王琰",
+    "birthday": "1999-08-01",
+    "period": "GNZ48九期生",
+    "debut": "2021-01-01",
+    "joinYear": 21,
+    "joinDays": 153
+  },
+  {
+    "name": "郑奕雯",
+    "birthday": "2001-01-11",
+    "period": "GNZ48九期生",
+    "debut": "2021-01-01",
+    "joinYear": 19,
+    "joinDays": 355
+  },
+  {
+    "name": "林佳怡",
+    "birthday": "2001-01-13",
+    "period": "SNH48十五期生",
+    "debut": "2021-04-03",
+    "joinYear": 20,
+    "joinDays": 80
+  },
+  {
+    "name": "武博涵",
+    "birthday": "2000-01-23",
+    "period": "SNH48十五期生",
+    "debut": "2021-04-03",
+    "joinYear": 21,
+    "joinDays": 71
+  },
+  {
+    "name": "禹佳蔚",
+    "birthday": "2006-06-07",
+    "period": "SNH48十五期生",
+    "debut": "2021-04-03",
+    "joinYear": 14,
+    "joinDays": 300
+  },
+  {
+    "name": "张月铭",
+    "birthday": "1998-10-07",
+    "period": "SNH48十五期生",
+    "debut": "2021-04-04",
+    "joinYear": 22,
+    "joinDays": 179
+  },
+  {
+    "name": "张冉冉",
+    "birthday": "2000-02-07",
+    "period": "SNH48十五期生",
+    "debut": "2021-04-04",
+    "joinYear": 21,
+    "joinDays": 57
+  },
+  {
+    "name": "张诗芸",
+    "birthday": "1999-07-07",
+    "period": "SNH48十五期生",
+    "debut": "2021-04-04",
+    "joinYear": 21,
+    "joinDays": 271
+  },
+  {
+    "name": "周培溪",
+    "birthday": "2001-08-02",
+    "period": "GNZ48十期生",
+    "debut": "2021-05-03",
+    "joinYear": 19,
+    "joinDays": 274
+  },
+  {
+    "name": "陈泓宇",
+    "birthday": "2000-02-06",
+    "period": "GNZ48十期生",
+    "debut": "2021-05-03",
+    "joinYear": 21,
+    "joinDays": 87
+  },
+  {
+    "name": "项宇婧",
+    "birthday": "2002-07-09",
+    "period": "GNZ48十期生",
+    "debut": "2021-05-03",
+    "joinYear": 18,
+    "joinDays": 298
+  },
+  {
+    "name": "王依柳",
+    "birthday": "2000-07-13",
+    "period": "SNH48十六期生",
+    "debut": "2021-09-09",
+    "joinYear": 21,
+    "joinDays": 58
+  },
+  {
+    "name": "熊紫轶",
+    "birthday": "2000-05-31",
+    "period": "SNH48十六期生",
+    "debut": "2021-09-09",
+    "joinYear": 21,
+    "joinDays": 101
+  },
+  {
+    "name": "贝楚涵",
+    "birthday": "2005-09-07",
+    "period": "SNH48十六期生",
+    "debut": "2021-09-10",
+    "joinYear": 16,
+    "joinDays": 3
+  },
+  {
+    "name": "朱涵佳",
+    "birthday": "2004-02-18",
+    "period": "SNH48十六期生",
+    "debut": "2021-09-10",
+    "joinYear": 17,
+    "joinDays": 205
+  },
+  {
+    "name": "芦馨怡",
+    "birthday": "2001-10-29",
+    "period": "SNH48十六期生",
+    "debut": "2021-09-10",
+    "joinYear": 19,
+    "joinDays": 316
+  },
+  {
+    "name": "朱瑞缘",
+    "birthday": "2000-08-18",
+    "period": "CKG48五期生",
+    "debut": "2021-11-27",
+    "joinYear": 21,
+    "joinDays": 101
+  },
+  {
+    "name": "骆羽庭",
+    "birthday": "2002-04-24",
+    "period": "CKG48五期生",
+    "debut": "2021-11-27",
+    "joinYear": 19,
+    "joinDays": 217
+  },
+  {
+    "name": "谢金男",
+    "birthday": "2002-05-07",
+    "period": "CKG48五期生",
+    "debut": "2021-11-27",
+    "joinYear": 19,
+    "joinDays": 204
+  },
+  {
+    "name": "付美善",
+    "birthday": "2002-02-08",
+    "period": "CKG48五期生",
+    "debut": "2021-11-27",
+    "joinYear": 19,
+    "joinDays": 292
+  },
+  {
+    "name": "陈颖琳",
+    "birthday": "2000-05-22",
+    "period": "CKG48五期生",
+    "debut": "2021-11-27",
+    "joinYear": 21,
+    "joinDays": 189
+  },
+  {
+    "name": "刘宇婷",
+    "birthday": "2002-02-18",
+    "period": "CKG48五期生",
+    "debut": "2021-11-27",
+    "joinYear": 19,
+    "joinDays": 282
+  },
+  {
+    "name": "张帆",
+    "birthday": "2002-09-11",
+    "period": "CKG48五期生",
+    "debut": "2021-11-27",
+    "joinYear": 19,
+    "joinDays": 77
+  },
+  {
+    "name": "郭晓盈",
+    "birthday": "2001-05-15",
+    "period": "BEJ48十期生",
+    "debut": "2021-12-11",
+    "joinYear": 20,
+    "joinDays": 210
+  },
+  {
+    "name": "韩雪",
+    "birthday": "2000-05-29",
+    "period": "BEJ48十期生",
+    "debut": "2021-12-11",
+    "joinYear": 21,
+    "joinDays": 196
+  },
+  {
+    "name": "李思奥",
+    "birthday": "2001-07-24",
+    "period": "BEJ48十期生",
+    "debut": "2021-12-11",
+    "joinYear": 20,
+    "joinDays": 140
+  },
+  {
+    "name": "林滢",
+    "birthday": "2005-08-04",
+    "period": "BEJ48十期生",
+    "debut": "2021-12-11",
+    "joinYear": 16,
+    "joinDays": 129
+  },
+  {
+    "name": "王思奕",
+    "birthday": "2002-05-06",
+    "period": "BEJ48十期生",
+    "debut": "2021-12-11",
+    "joinYear": 19,
+    "joinDays": 219
+  },
+  {
+    "name": "王言蹊",
+    "birthday": "2001-05-15",
+    "period": "BEJ48十期生",
+    "debut": "2021-12-11",
+    "joinYear": 20,
+    "joinDays": 210
+  },
+  {
+    "name": "朱虹蓉",
+    "birthday": "2000-09-27",
+    "period": "BEJ48十期生",
+    "debut": "2021-12-11",
+    "joinYear": 21,
+    "joinDays": 75
+  },
+  {
+    "name": "黄汝彤",
+    "birthday": "2002-01-26",
+    "period": "GNZ48十一期生",
+    "debut": "2021-12-25",
+    "joinYear": 19,
+    "joinDays": 333
+  },
+  {
+    "name": "惠煜轩",
+    "birthday": "2002-12-08",
+    "period": "GNZ48十一期生",
+    "debut": "2021-12-25",
+    "joinYear": 19,
+    "joinDays": 17
+  },
+  {
+    "name": "雷淑怡",
+    "birthday": "2003-09-19",
+    "period": "GNZ48十一期生",
+    "debut": "2021-12-25",
+    "joinYear": 18,
+    "joinDays": 97
+  },
+  {
+    "name": "林恩同",
+    "birthday": "2006-06-30",
+    "period": "GNZ48十一期生",
+    "debut": "2021-12-25",
+    "joinYear": 15,
+    "joinDays": 178
+  },
+  {
+    "name": "侯祎冉",
+    "birthday": "2005-05-31",
+    "period": "GNZ48十二期生",
+    "debut": "2022-05-04",
+    "joinYear": 16,
+    "joinDays": 338
+  },
+  {
+    "name": "陆靖婷",
+    "birthday": "2002-07-10",
+    "period": "GNZ48十二期生",
+    "debut": "2022-05-04",
+    "joinYear": 19,
+    "joinDays": 298
+  },
+  {
+    "name": "吴睿莎",
+    "birthday": "2000-09-09",
+    "period": "BEJ48十一期生",
+    "debut": "2022-06-25",
+    "joinYear": 21,
+    "joinDays": 289
+  },
+  {
+    "name": "朱力维",
+    "birthday": "2000-05-18",
+    "period": "BEJ48十一期生",
+    "debut": "2022-06-25",
+    "joinYear": 22,
+    "joinDays": 38
+  },
+  {
+    "name": "刘小涵",
+    "birthday": "2000-08-18",
+    "period": "SNH48十七期生",
+    "debut": "2022-08-27",
+    "joinYear": 22,
+    "joinDays": 9
+  },
+  {
+    "name": "吕相宜",
+    "birthday": "2003-02-03",
+    "period": "SNH48十七期生",
+    "debut": "2022-08-27",
+    "joinYear": 19,
+    "joinDays": 205
+  },
+  {
+    "name": "张文婷",
+    "birthday": "2001-07-12",
+    "period": "SNH48十七期生",
+    "debut": "2022-08-27",
+    "joinYear": 21,
+    "joinDays": 46
+  },
+  {
+    "name": "占迪",
+    "birthday": "2003-01-23",
+    "period": "SNH48十七期生",
+    "debut": "2022-09-30",
+    "joinYear": 19,
+    "joinDays": 250
+  },
+  {
+    "name": "施未希",
+    "birthday": "2001-11-29",
+    "period": "SNH48十七期生",
+    "debut": "2022-09-30",
+    "joinYear": 20,
+    "joinDays": 305
+  },
+  {
+    "name": "陈淑钰",
+    "birthday": "2006-02-23",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 16,
+    "joinDays": 221
+  },
+  {
+    "name": "郭兆媛",
+    "birthday": "2000-02-07",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 22,
+    "joinDays": 238
+  },
+  {
+    "name": "何林燕",
+    "birthday": "2002-10-23",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 19,
+    "joinDays": 344
+  },
+  {
+    "name": "黄艺暄",
+    "birthday": "2006-11-10",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 15,
+    "joinDays": 326
+  },
+  {
+    "name": "刘欣媛",
+    "birthday": "2004-11-17",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 17,
+    "joinDays": 319
+  },
+  {
+    "name": "林奕希",
+    "birthday": "2004-08-09",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 18,
+    "joinDays": 54
+  },
+  {
+    "name": "马可悦",
+    "birthday": "2002-06-29",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 20,
+    "joinDays": 95
+  },
+  {
+    "name": "蒙晓丽",
+    "birthday": "2003-02-27",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 19,
+    "joinDays": 217
+  },
+  {
+    "name": "秦露丹",
+    "birthday": "2002-07-29",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 20,
+    "joinDays": 65
+  },
+  {
+    "name": "邱刘佳",
+    "birthday": "2002-12-04",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 19,
+    "joinDays": 302
+  },
+  {
+    "name": "宋筱璐",
+    "birthday": "2003-08-17",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 19,
+    "joinDays": 46
+  },
+  {
+    "name": "申雨鑫",
+    "birthday": "2004-01-23",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 18,
+    "joinDays": 253
+  },
+  {
+    "name": "谭思慧",
+    "birthday": "2001-11-14",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 20,
+    "joinDays": 322
+  },
+  {
+    "name": "王语晨",
+    "birthday": "2002-05-18",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 20,
+    "joinDays": 137
+  },
+  {
+    "name": "夏莹",
+    "birthday": "2001-05-01",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 21,
+    "joinDays": 154
+  },
+  {
+    "name": "许雅兰",
+    "birthday": "2000-08-22",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 22,
+    "joinDays": 41
+  },
+  {
+    "name": "叶溁语",
+    "birthday": "2003-10-30",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 18,
+    "joinDays": 337
+  },
+  {
+    "name": "钟洁玟",
+    "birthday": "2003-06-05",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 19,
+    "joinDays": 119
+  },
+  {
+    "name": "张芷欣",
+    "birthday": "2004-10-08",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 17,
+    "joinDays": 359
+  },
+  {
+    "name": "周是汝",
+    "birthday": "1997-08-20",
+    "period": "GNZ48十三期生",
+    "debut": "2022-10-02",
+    "joinYear": 25,
+    "joinDays": 43
+  },
+  {
+    "name": "郑照暄",
+    "birthday": "2002-01-05",
+    "period": "BEJ48十二期生",
+    "debut": "2023-01-02",
+    "joinYear": 20,
+    "joinDays": 362
+  },
+  {
+    "name": "马欣宇",
+    "birthday": "2001-09-29",
+    "period": "BEJ48十二期生",
+    "debut": "2023-01-02",
+    "joinYear": 21,
+    "joinDays": 95
+  },
+  {
+    "name": "高梓萌",
+    "birthday": "2003-07-17",
+    "period": "BEJ48十二期生",
+    "debut": "2023-03-11",
+    "joinYear": 19,
+    "joinDays": 237
+  },
+  {
+    "name": "聂渝景",
+    "birthday": "2004-06-05",
+    "period": "BEJ48十二期生",
+    "debut": "2023-03-11",
+    "joinYear": 18,
+    "joinDays": 279
+  },
+  {
+    "name": "庄雅雯",
+    "birthday": "2002-11-24",
+    "period": "BEJ48十二期生",
+    "debut": "2023-03-11",
+    "joinYear": 20,
+    "joinDays": 107
+  },
+  {
+    "name": "李歆乐",
+    "birthday": "2004-01-19",
+    "period": "BEJ48十二期生",
+    "debut": "2023-05-02",
+    "joinYear": 19,
+    "joinDays": 104
+  },
+  {
+    "name": "朱一柠",
+    "birthday": "2000-11-20",
+    "period": "BEJ48十二期生",
+    "debut": "2023-05-02",
+    "joinYear": 22,
+    "joinDays": 163
+  },
+  {
+    "name": "卢晨昕",
+    "birthday": "2002-07-06",
+    "period": "SNH48十八期生",
+    "debut": "2023-05-02",
+    "joinYear": 20,
+    "joinDays": 300
+  },
+  {
+    "name": "李虞龙若",
+    "birthday": "2003-08-18",
+    "period": "SNH48十八期生",
+    "debut": "2023-05-02",
+    "joinYear": 19,
+    "joinDays": 257
+  },
+  {
+    "name": "温若其",
+    "birthday": "2000-06-15",
+    "period": "SNH48十八期生",
+    "debut": "2023-05-02",
+    "joinYear": 22,
+    "joinDays": 321
+  },
+  {
+    "name": "许佳佳",
+    "birthday": "2001-10-06",
+    "period": "SNH48十八期生",
+    "debut": "2023-05-02",
+    "joinYear": 21,
+    "joinDays": 208
+  },
+  {
+    "name": "尤可莹",
+    "birthday": "2000-08-14",
+    "period": "SNH48十八期生",
+    "debut": "2023-05-02",
+    "joinYear": 22,
+    "joinDays": 261
+  },
+  {
+    "name": "杨心渝",
+    "birthday": "2003-05-11",
+    "period": "SNH48十八期生",
+    "debut": "2023-05-02",
+    "joinYear": 19,
+    "joinDays": 356
+  },
+  {
+    "name": "周童玥",
+    "birthday": "2005-03-22",
+    "period": "SNH48十八期生",
+    "debut": "2023-05-02",
+    "joinYear": 18,
+    "joinDays": 41
+  },
+  {
+    "name": "张怡婷",
+    "birthday": "2005-01-27",
+    "period": "SNH48十八期生",
+    "debut": "2023-05-02",
+    "joinYear": 18,
+    "joinDays": 95
+  },
+  {
+    "name": "陈珊玲",
+    "birthday": "1999-06-30",
+    "period": "GNZ48十四期生",
+    "debut": "2023-05-07",
+    "joinYear": 23,
+    "joinDays": 311
+  },
+  {
+    "name": "陶慧",
+    "birthday": "2001-03-22",
+    "period": "GNZ48十四期生",
+    "debut": "2023-05-07",
+    "joinYear": 22,
+    "joinDays": 46
+  },
+  {
+    "name": "荣子彤",
+    "birthday": "2001-03-24",
+    "period": "GNZ48十四期生",
+    "debut": "2023-05-07",
+    "joinYear": 22,
+    "joinDays": 44
+  },
+  {
+    "name": "陈韵佳",
+    "birthday": "1999-12-12",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 23,
+    "joinDays": 172
+  },
+  {
+    "name": "何馨曼",
+    "birthday": "2006-09-28",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 16,
+    "joinDays": 247
+  },
+  {
+    "name": "胡丹",
+    "birthday": "2000-11-24",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 22,
+    "joinDays": 190
+  },
+  {
+    "name": "姬梦真",
+    "birthday": "2002-04-18",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 21,
+    "joinDays": 45
+  },
+  {
+    "name": "刘星雨",
+    "birthday": "2003-09-06",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 19,
+    "joinDays": 269
+  },
+  {
+    "name": "卢美廷",
+    "birthday": "2007-04-22",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 16,
+    "joinDays": 41
+  },
+  {
+    "name": "马星月",
+    "birthday": "2004-03-28",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 19,
+    "joinDays": 66
+  },
+  {
+    "name": "彭夕株",
+    "birthday": "2004-09-07",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 18,
+    "joinDays": 268
+  },
+  {
+    "name": "吴志越",
+    "birthday": "2003-02-18",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 20,
+    "joinDays": 104
+  },
+  {
+    "name": "杨添淩",
+    "birthday": "2002-08-15",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 20,
+    "joinDays": 291
+  },
+  {
+    "name": "张莉莉",
+    "birthday": "2005-06-23",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 17,
+    "joinDays": 344
+  },
+  {
+    "name": "张思妍",
+    "birthday": "2004-08-30",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 18,
+    "joinDays": 276
+  },
+  {
+    "name": "张伟依",
+    "birthday": "2001-09-01",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 21,
+    "joinDays": 274
+  },
+  {
+    "name": "张咏烨",
+    "birthday": "2004-07-08",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 18,
+    "joinDays": 329
+  },
+  {
+    "name": "张钰叶",
+    "birthday": "2002-06-16",
+    "period": "CKG48六期生",
+    "debut": "2023-06-02",
+    "joinYear": 20,
+    "joinDays": 351
+  },
+  {
+    "name": "程妤涵",
+    "birthday": "2006-12-04",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 16,
+    "joinDays": 180
+  },
+  {
+    "name": "何蔡娴",
+    "birthday": "2002-08-19",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 20,
+    "joinDays": 287
+  },
+  {
+    "name": "何梦迪",
+    "birthday": "2001-06-21",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 21,
+    "joinDays": 346
+  },
+  {
+    "name": "何渝欣",
+    "birthday": "2003-09-01",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 19,
+    "joinDays": 274
+  },
+  {
+    "name": "雷相菊",
+    "birthday": "2002-05-08",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 21,
+    "joinDays": 25
+  },
+  {
+    "name": "雷薪梦",
+    "birthday": "2008-04-16",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 15,
+    "joinDays": 47
+  },
+  {
+    "name": "林海盈",
+    "birthday": "2001-01-15",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 22,
+    "joinDays": 138
+  },
+  {
+    "name": "齐灵泉",
+    "birthday": "2006-08-25",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 16,
+    "joinDays": 281
+  },
+  {
+    "name": "任烨彦",
+    "birthday": "2002-02-03",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 21,
+    "joinDays": 119
+  },
+  {
+    "name": "谭勇航",
+    "birthday": "2003-02-12",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 20,
+    "joinDays": 110
+  },
+  {
+    "name": "王依",
+    "birthday": "2005-01-18",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 18,
+    "joinDays": 135
+  },
+  {
+    "name": "王艺霖",
+    "birthday": "2003-08-03",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 19,
+    "joinDays": 303
+  },
+  {
+    "name": "徐钰涵",
+    "birthday": "2003-06-14",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 19,
+    "joinDays": 353
+  },
+  {
+    "name": "袁艺洁",
+    "birthday": "2004-02-01",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 19,
+    "joinDays": 122
+  },
+  {
+    "name": "程宝玉",
+    "birthday": "2001-05-01",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 22,
+    "joinDays": 32
+  },
+  {
+    "name": "吴云",
+    "birthday": "1999-08-22",
+    "period": "CGT48一期生",
+    "debut": "2023-06-02",
+    "joinYear": 23,
+    "joinDays": 284
+  },
+  {
+    "name": "阿丽米热",
+    "birthday": "2001-03-17",
+    "period": "BEJ48十三期生",
+    "debut": "2023-09-17",
+    "joinYear": 22,
+    "joinDays": 184
+  },
+  {
+    "name": "陈枳霏",
+    "birthday": "2002-08-16",
+    "period": "BEJ48十三期生",
+    "debut": "2023-09-17",
+    "joinYear": 21,
+    "joinDays": 32
+  },
+  {
+    "name": "刁昕妤",
+    "birthday": "2002-04-20",
+    "period": "BEJ48十三期生",
+    "debut": "2023-09-17",
+    "joinYear": 21,
+    "joinDays": 150
+  },
+  {
+    "name": "高予瑾",
+    "birthday": "2000-01-08",
+    "period": "BEJ48十三期生",
+    "debut": "2023-09-17",
+    "joinYear": 23,
+    "joinDays": 253
+  },
+  {
+    "name": "孟清渝",
+    "birthday": "2006-06-06",
+    "period": "BEJ48十三期生",
+    "debut": "2023-09-17",
+    "joinYear": 17,
+    "joinDays": 103
+  },
+  {
+    "name": "孙嘉馥",
+    "birthday": "2002-06-13",
+    "period": "BEJ48十三期生",
+    "debut": "2023-09-17",
+    "joinYear": 21,
+    "joinDays": 96
+  },
+  {
+    "name": "沈祉含",
+    "birthday": "2003-04-11",
+    "period": "BEJ48十三期生",
+    "debut": "2023-09-17",
+    "joinYear": 20,
+    "joinDays": 159
+  },
+  {
+    "name": "王祉依",
+    "birthday": "2002-11-18",
+    "period": "BEJ48十三期生",
+    "debut": "2023-09-17",
+    "joinYear": 20,
+    "joinDays": 303
+  },
+  {
+    "name": "袁涵",
+    "birthday": "2002-10-11",
+    "period": "BEJ48十三期生",
+    "debut": "2023-09-17",
+    "joinYear": 20,
+    "joinDays": 341
+  },
+  {
+    "name": "张歆如",
+    "birthday": "2003-03-28",
+    "period": "BEJ48十三期生",
+    "debut": "2023-09-17",
+    "joinYear": 20,
+    "joinDays": 173
+  },
+  {
+    "name": "丁子钦",
+    "birthday": "2002-02-19",
+    "period": "BEJ48十三期生",
+    "debut": "2023-12-16",
+    "joinYear": 21,
+    "joinDays": 300
+  },
+  {
+    "name": "梁怀方",
+    "birthday": "2003-07-26",
+    "period": "SNH48十九期生",
+    "debut": "2023-09-30",
+    "joinYear": 20,
+    "joinDays": 66
+  },
+  {
+    "name": "唐程成",
+    "birthday": "2003-02-28",
+    "period": "SNH48十九期生",
+    "debut": "2023-09-30",
+    "joinYear": 20,
+    "joinDays": 214
+  },
+  {
+    "name": "王悦垚",
+    "birthday": "2002-11-24",
+    "period": "SNH48十九期生",
+    "debut": "2023-09-30",
+    "joinYear": 20,
+    "joinDays": 310
+  },
+  {
+    "name": "王紫澍",
+    "birthday": "2004-08-26",
+    "period": "SNH48十九期生",
+    "debut": "2023-09-30",
+    "joinYear": 19,
+    "joinDays": 35
+  },
+  {
+    "name": "叶凡",
+    "birthday": "2002-07-23",
+    "period": "SNH48十九期生",
+    "debut": "2023-09-30",
+    "joinYear": 21,
+    "joinDays": 69
+  },
+  {
+    "name": "张倩",
+    "birthday": "2002-02-26",
+    "period": "SNH48十九期生",
+    "debut": "2023-09-30",
+    "joinYear": 21,
+    "joinDays": 216
+  },
+  {
+    "name": "张瀚引",
+    "birthday": "2007-10-31",
+    "period": "SNH48十九期生",
+    "debut": "2023-11-01",
+    "joinYear": 16,
+    "joinDays": 1
+  },
+  {
+    "name": "王思予",
+    "birthday": "2008-09-03",
+    "period": "CKG48七期生",
+    "debut": "2023-09-30",
+    "joinYear": 15,
+    "joinDays": 27
+  },
+  {
+    "name": "谭景文",
+    "birthday": "2004-10-29",
+    "period": "CKG48七期生",
+    "debut": "2023-09-30",
+    "joinYear": 18,
+    "joinDays": 336
+  },
+  {
+    "name": "石梦湲",
+    "birthday": "2000-10-23",
+    "period": "CKG48七期生",
+    "debut": "2023-09-30",
+    "joinYear": 22,
+    "joinDays": 342
+  },
+  {
+    "name": "陈萧扬",
+    "birthday": "2004-01-24",
+    "period": "CKG48七期生",
+    "debut": "2023-10-29",
+    "joinYear": 19,
+    "joinDays": 279
+  },
+  {
+    "name": "胡思颖",
+    "birthday": "2006-01-09",
+    "period": "CKG48七期生",
+    "debut": "2023-10-29",
+    "joinYear": 17,
+    "joinDays": 293
+  },
+  {
+    "name": "林丹蕾",
+    "birthday": "1998-12-16",
+    "period": "CKG48七期生",
+    "debut": "2023-10-29",
+    "joinYear": 24,
+    "joinDays": 317
+  },
+  {
+    "name": "申家璐",
+    "birthday": "2007-04-26",
+    "period": "CKG48七期生",
+    "debut": "2023-10-29",
+    "joinYear": 16,
+    "joinDays": 186
+  },
+  {
+    "name": "谢晓倩",
+    "birthday": "2002-04-03",
+    "period": "GNZ48十五期生",
+    "debut": "2023-10-06",
+    "joinYear": 21,
+    "joinDays": 186
+  },
+  {
+    "name": "王珺",
+    "birthday": "2004-12-02",
+    "period": "GNZ48十五期生",
+    "debut": "2023-10-06",
+    "joinYear": 18,
+    "joinDays": 308
+  },
+  {
+    "name": "孙毓园",
+    "birthday": "2004-11-09",
+    "period": "GNZ48十五期生",
+    "debut": "2023-10-06",
+    "joinYear": 18,
+    "joinDays": 331
+  },
+  {
+    "name": "林家谊",
+    "birthday": "2008-09-07",
+    "period": "GNZ48十五期生",
+    "debut": "2023-10-06",
+    "joinYear": 15,
+    "joinDays": 29
+  },
+  {
+    "name": "丁嘉欣",
+    "birthday": "2004-04-24",
+    "period": "GNZ48十五期生",
+    "debut": "2023-10-06",
+    "joinYear": 19,
+    "joinDays": 165
+  },
+  {
+    "name": "焦玥",
+    "birthday": "2003-12-16",
+    "period": "GNZ48十六期生",
+    "debut": "2023-12-15",
+    "joinYear": 19,
+    "joinDays": 364
+  },
+  {
+    "name": "李咏薇",
+    "birthday": "2003-01-26",
+    "period": "GNZ48十六期生",
+    "debut": "2023-12-15",
+    "joinYear": 20,
+    "joinDays": 323
+  },
+  {
+    "name": "兰雅心",
+    "birthday": "2004-08-13",
+    "period": "CGT48二期生",
+    "debut": "2023-12-15",
+    "joinYear": 19,
+    "joinDays": 124
+  },
+  {
+    "name": "梅思华",
+    "birthday": "2003-09-11",
+    "period": "CGT48二期生",
+    "debut": "2023-12-15",
+    "joinYear": 20,
+    "joinDays": 95
+  },
+  {
+    "name": "徐钰清",
+    "birthday": "2004-06-04",
+    "period": "CGT48二期生",
+    "debut": "2023-12-15",
+    "joinYear": 19,
+    "joinDays": 194
+  },
+  {
+    "name": "张羽多",
+    "birthday": "2001-11-05",
+    "period": "CGT48二期生",
+    "debut": "2023-12-15",
+    "joinYear": 22,
+    "joinDays": 40
+  },
+  {
+    "name": "张咏琪",
+    "birthday": "2006-03-30",
+    "period": "CGT48二期生",
+    "debut": "2023-12-15",
+    "joinYear": 17,
+    "joinDays": 260
+  },
+  {
+    "name": "马丹旎",
+    "birthday": "2003-04-24",
+    "period": "CGT48二期生",
+    "debut": "2024-03-16",
+    "joinYear": 20,
+    "joinDays": 327
+  },
+  {
+    "name": "马蕴珊",
+    "birthday": "2004-05-27",
+    "period": "BEJ48十四期生",
+    "debut": "2024-02-24",
+    "joinYear": 19,
+    "joinDays": 273
+  },
+  {
+    "name": "陈艺",
+    "birthday": "2004-04-23",
+    "period": "BEJ48十四期生",
+    "debut": "2024-04-20",
+    "joinYear": 19,
+    "joinDays": 363
+  },
+  {
+    "name": "陈真允一",
+    "birthday": "2002-06-14",
+    "period": "SNH48二十期生",
+    "debut": "2024-03-16",
+    "joinYear": 21,
+    "joinDays": 275
+  },
+  {
+    "name": "罗颍宸",
+    "birthday": "2001-07-02",
+    "period": "SNH48二十期生",
+    "debut": "2024-03-16",
+    "joinYear": 22,
+    "joinDays": 257
+  },
+  {
+    "name": "温冰冰",
+    "birthday": "2001-11-03",
+    "period": "SNH48二十期生",
+    "debut": "2024-03-16",
+    "joinYear": 22,
+    "joinDays": 133
+  },
+  {
+    "name": "吴欣怡",
+    "birthday": "2002-01-11",
+    "period": "SNH48二十期生",
+    "debut": "2024-03-16",
+    "joinYear": 22,
+    "joinDays": 64
+  },
+  {
+    "name": "夏奕欣",
+    "birthday": "2004-02-20",
+    "period": "SNH48二十期生",
+    "debut": "2024-03-16",
+    "joinYear": 20,
+    "joinDays": 25
+  },
+  {
+    "name": "张曼妮",
+    "birthday": "2004-01-25",
+    "period": "SNH48二十期生",
+    "debut": "2024-03-16",
+    "joinYear": 20,
+    "joinDays": 51
+  },
+  {
+    "name": "潘力帼",
+    "birthday": "2004-06-10",
+    "period": "SNH48二十期生",
+    "debut": "2024-05-05",
+    "joinYear": 19,
+    "joinDays": 330
+  },
+  {
+    "name": "陈芷晴",
+    "birthday": "2001-12-22",
+    "period": "SNH48二十期生",
+    "debut": "2024-05-05",
+    "joinYear": 22,
+    "joinDays": 134
+  },
+  {
+    "name": "姚锦杰",
+    "birthday": "2002-04-12",
+    "period": "CKG48八期生",
+    "debut": "2024-05-02",
+    "joinYear": 22,
+    "joinDays": 20
+  },
+  {
+    "name": "袁希璨",
+    "birthday": "2008-09-10",
+    "period": "CKG48八期生",
+    "debut": "2024-05-02",
+    "joinYear": 15,
+    "joinDays": 235
+  },
+  {
+    "name": "郝茹馨",
+    "birthday": "2003-03-21",
+    "period": "CKG48八期生",
+    "debut": "2024-09-07",
+    "joinYear": 21,
+    "joinDays": 170
+  },
+  {
+    "name": "朱文露",
+    "birthday": "2002-09-13",
+    "period": "CKG48八期生",
+    "debut": "2024-09-07",
+    "joinYear": 21,
+    "joinDays": 359
+  },
+  {
+    "name": "刘思田",
+    "birthday": "2003-06-27",
+    "period": "CKG48八期生",
+    "debut": "2024-11-23",
+    "joinYear": 21,
+    "joinDays": 149
+  },
+  {
+    "name": "徐沁楠",
+    "birthday": "2005-05-30",
+    "period": "CKG48八期生",
+    "debut": "2024-11-23",
+    "joinYear": 19,
+    "joinDays": 177
+  },
+  {
+    "name": "卓思佳",
+    "birthday": "2007-05-05",
+    "period": "CKG48八期生",
+    "debut": "2024-11-23",
+    "joinYear": 17,
+    "joinDays": 202
+  },
+  {
+    "name": "孔渊",
+    "birthday": "2004-07-14",
+    "period": "GNZ48十六期生",
+    "debut": "2024-05-17",
+    "joinYear": 19,
+    "joinDays": 308
+  },
+  {
+    "name": "梁子瑄",
+    "birthday": "2008-03-16",
+    "period": "GNZ48十六期生",
+    "debut": "2024-05-17",
+    "joinYear": 16,
+    "joinDays": 62
+  },
+  {
+    "name": "许涵婧",
+    "birthday": "2007-07-23",
+    "period": "GNZ48十六期生",
+    "debut": "2024-05-17",
+    "joinYear": 16,
+    "joinDays": 298
+  },
+  {
+    "name": "杨雅雯",
+    "birthday": "2005-04-07",
+    "period": "GNZ48十六期生",
+    "debut": "2024-05-17",
+    "joinYear": 19,
+    "joinDays": 40
+  },
+  {
+    "name": "赵文凤",
+    "birthday": "2002-11-12",
+    "period": "GNZ48十六期生",
+    "debut": "2024-05-17",
+    "joinYear": 21,
+    "joinDays": 186
+  },
+  {
+    "name": "郭琬苏",
+    "birthday": "2009-12-04",
+    "period": "CGT48三期生",
+    "debut": "2024-06-02",
+    "joinYear": 14,
+    "joinDays": 180
+  },
+  {
+    "name": "李秋月",
+    "birthday": "2005-09-18",
+    "period": "CGT48三期生",
+    "debut": "2024-06-02",
+    "joinYear": 18,
+    "joinDays": 257
+  },
+  {
+    "name": "王宇清",
+    "birthday": "2005-09-25",
+    "period": "CGT48三期生",
+    "debut": "2024-06-02",
+    "joinYear": 18,
+    "joinDays": 250
+  },
+  {
+    "name": "杨子涵",
+    "birthday": "2004-07-13",
+    "period": "CGT48三期生",
+    "debut": "2024-06-02",
+    "joinYear": 19,
+    "joinDays": 325
+  },
+  {
+    "name": "张沁芝",
+    "birthday": "2002-01-30",
+    "period": "CGT48三期生",
+    "debut": "2024-06-02",
+    "joinYear": 22,
+    "joinDays": 123
+  },
+  {
+    "name": "包楹",
+    "birthday": "2002-12-18",
+    "period": "BEJ48十五期生",
+    "debut": "2024-08-17",
+    "joinYear": 21,
+    "joinDays": 242
+  },
+  {
+    "name": "谷雨馨",
+    "birthday": "2008-06-24",
+    "period": "BEJ48十五期生",
+    "debut": "2024-08-17",
+    "joinYear": 16,
+    "joinDays": 54
+  },
+  {
+    "name": "金宛莹",
+    "birthday": "2006-02-04",
+    "period": "BEJ48十五期生",
+    "debut": "2024-08-17",
+    "joinYear": 18,
+    "joinDays": 194
+  },
+  {
+    "name": "马明萱",
+    "birthday": "2003-07-20",
+    "period": "BEJ48十五期生",
+    "debut": "2024-08-17",
+    "joinYear": 21,
+    "joinDays": 28
+  },
+  {
+    "name": "单子涵",
+    "birthday": "2005-10-26",
+    "period": "BEJ48十五期生",
+    "debut": "2024-08-17",
+    "joinYear": 18,
+    "joinDays": 295
+  },
+  {
+    "name": "王佳琪",
+    "birthday": "2006-03-31",
+    "period": "BEJ48十五期生",
+    "debut": "2024-08-17",
+    "joinYear": 18,
+    "joinDays": 139
+  },
+  {
+    "name": "王苏南",
+    "birthday": "2002-12-16",
+    "period": "BEJ48十五期生",
+    "debut": "2024-08-17",
+    "joinYear": 21,
+    "joinDays": 244
+  },
+  {
+    "name": "张颂宁",
+    "birthday": "2004-09-01",
+    "period": "BEJ48十五期生",
+    "debut": "2024-08-17",
+    "joinYear": 19,
+    "joinDays": 351
+  },
+  {
+    "name": "朱玥彤",
+    "birthday": "2001-03-11",
+    "period": "BEJ48十五期生",
+    "debut": "2024-08-17",
+    "joinYear": 23,
+    "joinDays": 159
+  },
+  {
+    "name": "郭依晨",
+    "birthday": "2007-04-24",
+    "period": "BEJ48十五期生",
+    "debut": "2024-10-19",
+    "joinYear": 17,
+    "joinDays": 178
+  },
+  {
+    "name": "陈俞希",
+    "birthday": "2007-10-19",
+    "period": "SNH48二十一期生",
+    "debut": "2024-08-29",
+    "joinYear": 16,
+    "joinDays": 314
+  },
+  {
+    "name": "金泓言",
+    "birthday": "2008-06-14",
+    "period": "SNH48二十一期生",
+    "debut": "2024-08-29",
+    "joinYear": 16,
+    "joinDays": 76
+  },
+  {
+    "name": "李妍",
+    "birthday": "2002-01-09",
+    "period": "SNH48二十一期生",
+    "debut": "2024-08-29",
+    "joinYear": 22,
+    "joinDays": 232
+  },
+  {
+    "name": "李子忻",
+    "birthday": "2005-10-29",
+    "period": "SNH48二十一期生",
+    "debut": "2024-08-29",
+    "joinYear": 18,
+    "joinDays": 304
+  },
+  {
+    "name": "孙莉",
+    "birthday": "2006-12-26",
+    "period": "SNH48二十一期生",
+    "debut": "2024-08-29",
+    "joinYear": 17,
+    "joinDays": 246
+  },
+  {
+    "name": "肖彦竹",
+    "birthday": "2005-08-16",
+    "period": "SNH48二十一期生",
+    "debut": "2024-08-29",
+    "joinYear": 19,
+    "joinDays": 13
+  },
+  {
+    "name": "张雷雷",
+    "birthday": "2002-10-17",
+    "period": "SNH48二十一期生",
+    "debut": "2024-08-29",
+    "joinYear": 21,
+    "joinDays": 316
+  },
+  {
+    "name": "白佳媛",
+    "birthday": "2006-06-14",
+    "period": "GNZ48十七期生",
+    "debut": "2024-09-15",
+    "joinYear": 18,
+    "joinDays": 93
+  },
+  {
+    "name": "鲍雨欣",
+    "birthday": "2004-07-25",
+    "period": "GNZ48十七期生",
+    "debut": "2024-09-15",
+    "joinYear": 20,
+    "joinDays": 52
+  },
+  {
+    "name": "雷瑞妍",
+    "birthday": "2006-04-08",
+    "period": "GNZ48十七期生",
+    "debut": "2024-09-15",
+    "joinYear": 18,
+    "joinDays": 160
+  },
+  {
+    "name": "林仪",
+    "birthday": "2004-04-14",
+    "period": "GNZ48十七期生",
+    "debut": "2024-09-15",
+    "joinYear": 20,
+    "joinDays": 154
+  },
+  {
+    "name": "唐果",
+    "birthday": "2009-01-01",
+    "period": "GNZ48十七期生",
+    "debut": "2024-09-15",
+    "joinYear": 15,
+    "joinDays": 257
+  },
+  {
+    "name": "王阙蝶舞",
+    "birthday": "2004-04-20",
+    "period": "GNZ48十七期生",
+    "debut": "2024-09-15",
+    "joinYear": 20,
+    "joinDays": 148
+  },
+  {
+    "name": "许泳怡",
+    "birthday": "2001-11-16",
+    "period": "GNZ48十七期生",
+    "debut": "2024-09-15",
+    "joinYear": 22,
+    "joinDays": 303
+  },
+  {
+    "name": "徐郑子滢",
+    "birthday": "2004-06-02",
+    "period": "GNZ48十七期生",
+    "debut": "2024-09-15",
+    "joinYear": 20,
+    "joinDays": 105
+  },
+  {
+    "name": "陈诗莹",
+    "birthday": "2005-09-22",
+    "period": "GNZ48十八期生",
+    "debut": "2025-01-01",
+    "joinYear": 19,
+    "joinDays": 101
+  },
+  {
+    "name": "和丹丹",
+    "birthday": "2003-01-13",
+    "period": "GNZ48十八期生",
+    "debut": "2025-01-01",
+    "joinYear": 21,
+    "joinDays": 353
+  },
+  {
+    "name": "万芳源",
+    "birthday": "2006-10-28",
+    "period": "GNZ48十八期生",
+    "debut": "2025-01-01",
+    "joinYear": 18,
+    "joinDays": 65
+  },
+  {
+    "name": "谢林容",
+    "birthday": "2007-02-06",
+    "period": "GNZ48十八期生",
+    "debut": "2025-01-01",
+    "joinYear": 17,
+    "joinDays": 329
+  },
+  {
+    "name": "张佳仪",
+    "birthday": "2009-06-16",
+    "period": "GNZ48十八期生",
+    "debut": "2025-01-01",
+    "joinYear": 15,
+    "joinDays": 199
+  },
+  {
+    "name": "朱丽娜",
+    "birthday": "2005-03-18",
+    "period": "GNZ48十八期生",
+    "debut": "2025-01-01",
+    "joinYear": 19,
+    "joinDays": 289
+  },
+  {
+    "name": "秦晓芸",
+    "birthday": "2004-12-08",
+    "period": "CKG48八期生",
+    "debut": "2025-03-08",
+    "joinYear": 20,
+    "joinDays": 90
+  },
+  {
+    "name": "朱怡霖",
+    "birthday": "2005-06-30",
+    "period": "CKG48八期生",
+    "debut": "2025-03-08",
+    "joinYear": 19,
+    "joinDays": 251
+  },
+  {
+    "name": "陈子悦",
+    "birthday": "2006-06-10",
+    "period": "CKG48八期生",
+    "debut": "2025-03-08",
+    "joinYear": 18,
+    "joinDays": 271
+  },
+  {
+    "name": "刘艾萌",
+    "birthday": "2008-06-06",
+    "period": "CKG48八期生",
+    "debut": "2025-03-08",
+    "joinYear": 16,
+    "joinDays": 275
+  },
+  {
+    "name": "刘莹莹",
+    "birthday": "2006-06-11",
+    "period": "CKG48八期生",
+    "debut": "2025-03-08",
+    "joinYear": 18,
+    "joinDays": 270
+  },
+  {
+    "name": "罗婕桢",
+    "birthday": "2006-11-08",
+    "period": "CKG48八期生",
+    "debut": "2025-03-08",
+    "joinYear": 18,
+    "joinDays": 120
+  },
+  {
+    "name": "乔诗然",
+    "birthday": "2009-02-18",
+    "period": "BEJ48十六期生",
+    "debut": "2025-03-08",
+    "joinYear": 16,
+    "joinDays": 18
+  },
+  {
+    "name": "冯雪",
+    "birthday": "2008-04-12",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 16,
+    "joinDays": 351
+  },
+  {
+    "name": "龚晨美",
+    "birthday": "2004-10-19",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 20,
+    "joinDays": 161
+  },
+  {
+    "name": "黄紫怡",
+    "birthday": "2005-11-13",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 19,
+    "joinDays": 136
+  },
+  {
+    "name": "蒋夏羽",
+    "birthday": "2007-07-09",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 17,
+    "joinDays": 263
+  },
+  {
+    "name": "康楚翊",
+    "birthday": "2007-11-25",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 17,
+    "joinDays": 124
+  },
+  {
+    "name": "李嘉怡",
+    "birthday": "2007-11-20",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 17,
+    "joinDays": 129
+  },
+  {
+    "name": "李芊",
+    "birthday": "2005-07-04",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 19,
+    "joinDays": 268
+  },
+  {
+    "name": "阙佳慧",
+    "birthday": "2004-10-13",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 20,
+    "joinDays": 167
+  },
+  {
+    "name": "覃柯蒙",
+    "birthday": "2002-07-12",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 22,
+    "joinDays": 260
+  },
+  {
+    "name": "盛乐",
+    "birthday": "2004-06-02",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 20,
+    "joinDays": 300
+  },
+  {
+    "name": "王禹诺",
+    "birthday": "2006-05-06",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 18,
+    "joinDays": 327
+  },
+  {
+    "name": "谢珊珊",
+    "birthday": "2004-02-24",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 21,
+    "joinDays": 34
+  },
+  {
+    "name": "徐一平",
+    "birthday": "2005-04-28",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 19,
+    "joinDays": 335
+  },
+  {
+    "name": "应籽言",
+    "birthday": "2001-07-19",
+    "period": "SNH48二十二期生",
+    "debut": "2025-10-05",
+    "joinYear": 24,
+    "joinDays": 78
+  },
+  {
+    "name": "张婷婷",
+    "birthday": "2005-01-14",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 20,
+    "joinDays": 74
+  },
+  {
+    "name": "钟亚男",
+    "birthday": "2004-10-23",
+    "period": "SNH48二十二期生",
+    "debut": "2025-03-29",
+    "joinYear": 20,
+    "joinDays": 157
+  },
+  {
+    "name": "程怡雯",
+    "birthday": "2002-08-16",
+    "period": "CGT48四期生",
+    "debut": "2025-05-02",
+    "joinYear": 22,
+    "joinDays": 259
+  },
+  {
+    "name": "耿钰嘉",
+    "birthday": "2007-02-21",
+    "period": "CGT48四期生",
+    "debut": "2025-05-02",
+    "joinYear": 18,
+    "joinDays": 70
+  },
+  {
+    "name": "黄蔚",
+    "birthday": "2005-04-12",
+    "period": "CGT48四期生",
+    "debut": "2025-05-02",
+    "joinYear": 20,
+    "joinDays": 20
+  },
+  {
+    "name": "胡琪涵",
+    "birthday": "2008-08-17",
+    "period": "CGT48四期生",
+    "debut": "2025-05-02",
+    "joinYear": 16,
+    "joinDays": 258
+  },
+  {
+    "name": "李怡淳",
+    "birthday": "2004-05-06",
+    "period": "CGT48四期生",
+    "debut": "2025-05-02",
+    "joinYear": 20,
+    "joinDays": 361
+  },
+  {
+    "name": "王相懿",
+    "birthday": "2007-01-19",
+    "period": "CGT48四期生",
+    "debut": "2025-05-02",
+    "joinYear": 18,
+    "joinDays": 103
+  },
+  {
+    "name": "许恩乔",
+    "birthday": "2008-08-15",
+    "period": "CGT48四期生",
+    "debut": "2025-05-02",
+    "joinYear": 16,
+    "joinDays": 260
+  },
+  {
+    "name": "易思桐",
+    "birthday": "2008-01-19",
+    "period": "CGT48四期生",
+    "debut": "2025-05-02",
+    "joinYear": 17,
+    "joinDays": 104
+  },
+  {
+    "name": "张伶",
+    "birthday": "2007-01-01",
+    "period": "CGT48四期生",
+    "debut": "2025-05-02",
+    "joinYear": 18,
+    "joinDays": 121
+  },
+  {
+    "name": "葛俊言",
+    "birthday": "2002-04-12",
+    "period": "CKG48九期生",
+    "debut": "2025-06-02",
+    "joinYear": 23,
+    "joinDays": 51
+  },
+  {
+    "name": "郝冰圆",
+    "birthday": "2005-06-11",
+    "period": "CKG48九期生",
+    "debut": "2025-06-02",
+    "joinYear": 19,
+    "joinDays": 356
+  },
+  {
+    "name": "黄孟浠",
+    "birthday": "2004-01-03",
+    "period": "CKG48九期生",
+    "debut": "2025-06-02",
+    "joinYear": 21,
+    "joinDays": 151
+  },
+  {
+    "name": "娜则乃",
+    "birthday": "2022-08-28",
+    "period": "CKG48九期生",
+    "debut": "2025-06-02",
+    "joinYear": 2,
+    "joinDays": 278
+  },
+  {
+    "name": "林柔廷",
+    "birthday": "2003-11-04",
+    "period": "CKG48九期生",
+    "debut": "2025-06-02",
+    "joinYear": 21,
+    "joinDays": 210
+  },
+  {
+    "name": "何诗雨",
+    "birthday": "2007-11-08",
+    "period": "CKG48九期生",
+    "debut": "2025-12-31",
+    "joinYear": 18,
+    "joinDays": 53
+  },
+  {
+    "name": "廖雨涵",
+    "birthday": "2007-07-11",
+    "period": "CKG48九期生",
+    "debut": "2025-12-31",
+    "joinYear": 18,
+    "joinDays": 173
+  },
+  {
+    "name": "王振楠",
+    "birthday": "2004-10-30",
+    "period": "CKG48九期生",
+    "debut": "2025-12-31",
+    "joinYear": 21,
+    "joinDays": 62
+  },
+  {
+    "name": "余茜果",
+    "birthday": "2008-01-11",
+    "period": "CKG48九期生",
+    "debut": "2025-12-31",
+    "joinYear": 17,
+    "joinDays": 355
+  },
+  {
+    "name": "周雨涵",
+    "birthday": "2007-08-20",
+    "period": "CKG48九期生",
+    "debut": "2025-12-31",
+    "joinYear": 18,
+    "joinDays": 133
+  },
+  {
+    "name": "曹可甜",
+    "birthday": "2006-03-15",
+    "period": "SNH48二十三期生",
+    "debut": "2025-08-16",
+    "joinYear": 19,
+    "joinDays": 154
+  },
+  {
+    "name": "刘诗彤",
+    "birthday": "2006-05-31",
+    "period": "SNH48二十三期生",
+    "debut": "2025-08-16",
+    "joinYear": 19,
+    "joinDays": 77
+  },
+  {
+    "name": "柳雨呈",
+    "birthday": "2007-08-20",
+    "period": "SNH48二十三期生",
+    "debut": "2025-08-16",
+    "joinYear": 17,
+    "joinDays": 361
+  },
+  {
+    "name": "李婷",
+    "birthday": "2004-02-08",
+    "period": "SNH48二十三期生",
+    "debut": "2025-09-24",
+    "joinYear": 21,
+    "joinDays": 229
+  },
+  {
+    "name": "钟郭菲杨",
+    "birthday": "2005-08-26",
+    "period": "SNH48二十三期生",
+    "debut": "2025-09-24",
+    "joinYear": 20,
+    "joinDays": 29
+  },
+  {
+    "name": "李继醇",
+    "birthday": "2005-07-05",
+    "period": "SNH48二十三期生",
+    "debut": "2025-09-25",
+    "joinYear": 20,
+    "joinDays": 82
+  },
+  {
+    "name": "曾昕妍",
+    "birthday": "2003-05-26",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 22,
+    "joinDays": 132
+  },
+  {
+    "name": "刘思雨",
+    "birthday": "2007-04-17",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 18,
+    "joinDays": 171
+  },
+  {
+    "name": "沈馨",
+    "birthday": "2006-02-20",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 19,
+    "joinDays": 227
+  },
+  {
+    "name": "陈嘉仪",
+    "birthday": "2005-01-10",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 20,
+    "joinDays": 268
+  },
+  {
+    "name": "蒋欣洳",
+    "birthday": "2007-07-04",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 18,
+    "joinDays": 93
+  },
+  {
+    "name": "刘婧阳",
+    "birthday": "2003-10-01",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 22,
+    "joinDays": 4
+  },
+  {
+    "name": "刘若熙",
+    "birthday": "2003-09-26",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 22,
+    "joinDays": 9
+  },
+  {
+    "name": "徐佳琳",
+    "birthday": "2007-03-12",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 18,
+    "joinDays": 207
+  },
+  {
+    "name": "郑柯炜",
+    "birthday": "2003-10-06",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 21,
+    "joinDays": 364
+  },
+  {
+    "name": "黄子欣",
+    "birthday": "2007-05-22",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 18,
+    "joinDays": 136
+  },
+  {
+    "name": "曾雪婷",
+    "birthday": "2005-03-13",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 20,
+    "joinDays": 206
+  },
+  {
+    "name": "韩云伊",
+    "birthday": "2004-12-13",
+    "period": "SNH48二十三期生",
+    "debut": "2025-10-05",
+    "joinYear": 20,
+    "joinDays": 296
+  },
+  {
+    "name": "张于馨",
+    "birthday": "2005-11-29",
+    "period": "CGT48五期生",
+    "debut": "2025-10-03",
+    "joinYear": 19,
+    "joinDays": 308
+  },
+  {
+    "name": "王靖雨",
+    "birthday": "2010-03-14",
+    "period": "CGT48五期生",
+    "debut": "2025-10-03",
+    "joinYear": 15,
+    "joinDays": 203
+  },
+  {
+    "name": "熊玊清",
+    "birthday": "2007-06-21",
+    "period": "CGT48五期生",
+    "debut": "2025-10-03",
+    "joinYear": 18,
+    "joinDays": 104
+  },
+  {
+    "name": "郑佳男",
+    "birthday": "2004-01-13",
+    "period": "CGT48五期生",
+    "debut": "2025-10-03",
+    "joinYear": 21,
+    "joinDays": 264
+  },
+  {
+    "name": "吴婳祎",
+    "birthday": "2007-09-26",
+    "period": "CGT48五期生",
+    "debut": "2025-10-03",
+    "joinYear": 18,
+    "joinDays": 7
+  },
+  {
+    "name": "梁艺馨",
+    "birthday": "2008-10-17",
+    "period": "CGT48五期生",
+    "debut": "2025-10-03",
+    "joinYear": 16,
+    "joinDays": 351
+  },
+  {
+    "name": "王小萌",
+    "birthday": "2003-01-21",
+    "period": "CGT48五期生",
+    "debut": "2025-10-03",
+    "joinYear": 22,
+    "joinDays": 255
+  },
+  {
+    "name": "李嘉琪",
+    "birthday": "2004-03-06",
+    "period": "CGT48五期生",
+    "debut": "2025-10-03",
+    "joinYear": 21,
+    "joinDays": 211
+  },
+  {
+    "name": "王艺淇",
+    "birthday": "2010-06-19",
+    "period": "CGT48五期生",
+    "debut": "2025-10-03",
+    "joinYear": 15,
+    "joinDays": 106
+  },
+  {
+    "name": "李梓源",
+    "birthday": "2005-04-17",
+    "period": "BEJ48十七期生",
+    "debut": "2025-10-05",
+    "joinYear": 20,
+    "joinDays": 171
+  },
+  {
+    "name": "王思文",
+    "birthday": "2007-04-19",
+    "period": "BEJ48十七期生",
+    "debut": "2025-10-05",
+    "joinYear": 18,
+    "joinDays": 169
+  },
+  {
+    "name": "张雅童",
+    "birthday": "2009-02-12",
+    "period": "BEJ48十七期生",
+    "debut": "2025-10-05",
+    "joinYear": 16,
+    "joinDays": 235
+  },
+  {
+    "name": "朱语凝",
+    "birthday": "2007-03-29",
+    "period": "BEJ48十七期生",
+    "debut": "2025-10-05",
+    "joinYear": 18,
+    "joinDays": 190
+  },
+  {
+    "name": "丁甄奥果",
+    "birthday": "2008-06-05",
+    "period": "GNZ48十九期生",
+    "debut": "2025-10-08",
+    "joinYear": 17,
+    "joinDays": 125
+  },
+  {
+    "name": "韩梓轩",
+    "birthday": "2002-09-29",
+    "period": "GNZ48十九期生",
+    "debut": "2025-10-08",
+    "joinYear": 23,
+    "joinDays": 9
+  },
+  {
+    "name": "李家敏",
+    "birthday": "2006-01-04",
+    "period": "GNZ48十九期生",
+    "debut": "2025-10-08",
+    "joinYear": 19,
+    "joinDays": 277
+  },
+  {
+    "name": "刘柳茜",
+    "birthday": "2009-12-24",
+    "period": "GNZ48十九期生",
+    "debut": "2025-10-08",
+    "joinYear": 15,
+    "joinDays": 288
+  },
+  {
+    "name": "王紫萱",
+    "birthday": "2004-01-31",
+    "period": "GNZ48十九期生",
+    "debut": "2025-10-08",
+    "joinYear": 21,
+    "joinDays": 251
+  },
+  {
+    "name": "王紫媛",
+    "birthday": "2009-06-29",
+    "period": "GNZ48十九期生",
+    "debut": "2025-10-08",
+    "joinYear": 16,
+    "joinDays": 101
+  },
+  {
+    "name": "魏诗绮",
+    "birthday": "2005-12-24",
+    "period": "GNZ48十九期生",
+    "debut": "2025-10-08",
+    "joinYear": 19,
+    "joinDays": 288
+  },
+  {
+    "name": "曾雨思",
+    "birthday": "2005-02-19",
+    "period": "GNZ48十九期生",
+    "debut": "2025-10-08",
+    "joinYear": 20,
+    "joinDays": 231
+  },
+  {
+    "name": "冯玉雯",
+    "birthday": "2004-06-28",
+    "period": "GNZ48二十期生",
+    "debut": "2026-02-08",
+    "joinYear": 21,
+    "joinDays": 225
+  },
+  {
+    "name": "韩鑫缘",
+    "birthday": "2008-11-14",
+    "period": "GNZ48二十期生",
+    "debut": "2026-02-08",
+    "joinYear": 17,
+    "joinDays": 86
+  },
+  {
+    "name": "孔美迪",
+    "birthday": "2006-11-23",
+    "period": "GNZ48二十期生",
+    "debut": "2026-02-08",
+    "joinYear": 19,
+    "joinDays": 77
+  },
+  {
+    "name": "李想",
+    "birthday": "2005-07-07",
+    "period": "GNZ48二十期生",
+    "debut": "2026-02-08",
+    "joinYear": 20,
+    "joinDays": 216
+  },
+  {
+    "name": "张臻",
+    "birthday": "2007-10-03",
+    "period": "GNZ48二十期生",
+    "debut": "2026-02-08",
+    "joinYear": 18,
+    "joinDays": 128
+  },
+  {
+    "name": "赵子涵",
+    "birthday": "2006-04-07",
+    "period": "GNZ48二十期生",
+    "debut": "2026-02-08",
+    "joinYear": 19,
+    "joinDays": 307
+  },
+  {
+    "name": "郭庆恩",
+    "birthday": "2006-07-25",
+    "period": "BEJ48十八期生",
+    "debut": "2026-04-04",
+    "joinYear": "=DATEDIF(D845,E845,\"Y\")",
+    "joinDays": "=DATEDIF($D845,$E845,\"YD\")"
+  },
+  {
+    "name": "温舒涵",
+    "birthday": "2004-08-24",
+    "period": "BEJ48十八期生",
+    "debut": "2026-04-04",
+    "joinYear": "=DATEDIF(D846,E846,\"Y\")",
+    "joinDays": "=DATEDIF($D846,$E846,\"YD\")"
+  },
+  {
+    "name": "王天娇",
+    "birthday": "2004-04-13",
+    "period": "BEJ48十八期生",
+    "debut": "2026-04-04",
+    "joinYear": "=DATEDIF(D847,E847,\"Y\")",
+    "joinDays": "=DATEDIF($D847,$E847,\"YD\")"
+  },
+  {
+    "name": "应立婷",
+    "birthday": "2022-07-18",
+    "period": "BEJ48十八期生",
+    "debut": "2026-04-04",
+    "joinYear": "=DATEDIF(D848,E848,\"Y\")",
+    "joinDays": "=DATEDIF($D848,$E848,\"YD\")"
+  },
+  {
+    "name": "张宸",
+    "birthday": "2004-03-07",
+    "period": "BEJ48十八期生",
+    "debut": "2026-04-04",
+    "joinYear": "=DATEDIF(D849,E849,\"Y\")",
+    "joinDays": "=DATEDIF($D849,$E849,\"YD\")"
+  },
+  {
+    "name": "郑依依",
+    "birthday": "2005-10-01",
+    "period": "BEJ48十八期生",
+    "debut": "2026-04-04",
+    "joinYear": "=DATEDIF(D850,E850,\"Y\")",
+    "joinDays": "=DATEDIF($D850,$E850,\"YD\")"
+  },
+  {
+    "name": null,
+    "birthday": null,
+    "period": null,
+    "debut": null,
+    "joinYear": null,
+    "joinDays": null
+  },
+  {
+    "name": null,
+    "birthday": null,
+    "period": null,
+    "debut": null,
+    "joinYear": null,
+    "joinDays": null
+  }
+];
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .upload-section {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: #f0f3ff;
+        }
+
+        .upload-area.dragover {
+            border-color: #764ba2;
+            background: #f0f3ff;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: #6c757d;
+            font-size: 16px;
+        }
+
+        .file-name {
+            margin-top: 15px;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .controls {
+            padding: 25px 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            background: #f8f9fa;
+        }
+
+        .select-wrapper {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .select-wrapper label {
+            display: block;
+            margin-bottom: 8px;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .members-list {
+            padding: 30px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .member-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .member-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .member-card.today {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border: 2px solid #ff9a56;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .member-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .member-details h3 {
+            font-size: 20px;
+            color: #212529;
+            margin-bottom: 5px;
+        }
+
+        .member-details p {
+            color: #6c757d;
+            font-size: 14px;
+            margin: 3px 0;
+        }
+
+        .member-details .info-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .member-details .info-tag {
+            background: #667eea;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .member-details .tenure {
+            color: #764ba2;
+            font-weight: 500;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .member-birthday {
+            text-align: right;
+        }
+
+        .birthday-date {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .birthday-days {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .birthday-days.soon {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .today-badge {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .stats {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                border-radius: 10px;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+                margin-bottom: 5px;
+            }
+
+            .header p {
+                font-size: 12px;
+            }
+
+            .upload-section {
+                padding: 15px;
+            }
+
+            .upload-area {
+                padding: 20px;
+            }
+
+            .upload-icon {
+                font-size: 36px;
+                margin-bottom: 10px;
+            }
+
+            .upload-text {
+                font-size: 14px;
+            }
+
+            .controls {
+                padding: 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .select-wrapper {
+                width: 100%;
+            }
+
+            .select-wrapper label {
+                font-size: 13px;
+                margin-bottom: 5px;
+            }
+
+            select {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .stats {
+                padding: 15px;
+                gap: 20px;
+            }
+
+            .stat-value {
+                font-size: 22px;
+            }
+
+            .stat-label {
+                font-size: 12px;
+            }
+
+            .members-list {
+                padding: 15px;
+            }
+
+            .member-card {
+                padding: 12px;
+                margin-bottom: 10px;
+                gap: 10px;
+            }
+
+            .member-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .member-details h3 {
+                font-size: 16px;
+                margin-bottom: 3px;
+            }
+
+            .member-details p {
+                font-size: 12px;
+                margin: 2px 0;
+            }
+
+            .member-details .info-tag {
+                font-size: 11px;
+                padding: 1px 8px;
+            }
+
+            .member-details .tenure {
+                font-size: 11px;
+                margin-top: 5px;
+            }
+
+            .birthday-date {
+                font-size: 18px;
+            }
+
+            .birthday-days {
+                font-size: 12px;
+                margin-top: 3px;
+            }
+
+            .today-badge {
+                font-size: 11px;
+                padding: 3px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎂 成员生日查询</h1>
+            <p>查看最近过生日的成员</p>
+        </div>
+
+        <div class="controls" id="controls">
+            <div class="select-wrapper">
+                <label>成员搜索</label>
+                <input type="text" id="searchInput" placeholder="输入成员名字搜索..." style="width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 15px; transition: all 0.3s ease;" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#e9ecef'">
+            </div>
+            <div class="select-wrapper">
+                <label>显示时间范围</label>
+                <select id="timeRange">
+                    <option value="7">最近 7 天</option>
+                    <option value="30">最近 30 天</option>
+                    <option value="999">全部</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="stats" id="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="totalMembers">0</div>
+                <div class="stat-label">总成员数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="upcomingCount">0</div>
+                <div class="stat-label">即将过生日</div>
+            </div>
+        </div>
+
+        <div class="members-list" id="membersList">
+            <div class="empty-state">
+                <div class="empty-state-icon">⏳</div>
+                <p>加载中...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 数据已从 members_data.js 加载
+        // membersData 变量已在全局可用
+        
+        const controls = document.getElementById('controls');
+        const stats = document.getElementById('stats');
+        const membersList = document.getElementById('membersList');
+        const timeRange = document.getElementById('timeRange');
+        const searchInput = document.getElementById('searchInput');
+        
+        // 有效成员数据
+        let validMembersData = [];
+
+        // 页面加载时直接显示数据
+        window.addEventListener('DOMContentLoaded', () => {
+            if (membersData && membersData.length > 0) {
+                // 过滤无效数据并转换日期
+                validMembersData = membersData.filter(member => {
+                    return member.name && member.birthday;
+                });
+                
+                validMembersData.forEach(member => {
+                    if (member.birthday && typeof member.birthday === 'string') {
+                        member.birthday = new Date(member.birthday);
+                    }
+                    if (member.debut && typeof member.debut === 'string') {
+                        member.joinDate = new Date(member.debut);
+                    }
+                });
+                
+                displayMembers();
+            } else {
+                showError('数据加载失败');
+            }
+        });
+
+        timeRange.addEventListener('change', () => {
+            displayMembers();
+        });
+        
+        searchInput.addEventListener('input', () => {
+            displayMembers();
+        });
+
+        function getDaysUntilBirthday(birthday) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            let nextBirthday = new Date(today.getFullYear(), birthday.getMonth(), birthday.getDate());
+            nextBirthday.setHours(0, 0, 0, 0);
+            
+            if (nextBirthday < today) {
+                nextBirthday = new Date(today.getFullYear() + 1, birthday.getMonth(), birthday.getDate());
+            }
+            
+            const diffTime = nextBirthday.getTime() - today.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            return diffDays;
+        }
+
+        function getTenure(joinDate) {
+            if (!joinDate) return null;
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            let years = today.getFullYear() - joinDate.getFullYear();
+            let months = today.getMonth() - joinDate.getMonth();
+            let days = today.getDate() - joinDate.getDate();
+            
+            if (days < 0) {
+                months--;
+                const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                days += prevMonth.getDate();
+            }
+            
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+            
+            return { years, months, days };
+        }
+
+        function formatTenure(joinDate) {
+            if (!joinDate) return '';
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const joinDateCopy = new Date(joinDate);
+            joinDateCopy.setHours(0, 0, 0, 0);
+            
+            const diffTime = today.getTime() - joinDateCopy.getTime();
+            const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            const years = Math.floor(totalDays / 365);
+            const remainingDays = totalDays % 365;
+            
+            let result = '';
+            if (years > 0) {
+                result += `${years}年`;
+            }
+            if (remainingDays > 0 || years === 0) {
+                result += `${remainingDays}日`;
+            }
+            
+            return result;
+        }
+
+        function getAge(birthday) {
+            const today = new Date();
+            let age = today.getFullYear() - birthday.getFullYear();
+            const monthDiff = today.getMonth() - birthday.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) {
+                age--;
+            }
+            
+            return age;
+        }
+
+        function displayMembers() {
+            const days = parseInt(timeRange.value);
+            const searchText = searchInput.value.trim().toLowerCase();
+            
+            // 先按名字搜索过滤
+            let searchedMembers = validMembersData;
+            if (searchText) {
+                searchedMembers = validMembersData.filter(member => {
+                    return member.name.toLowerCase().includes(searchText);
+                });
+            }
+            
+            // 再按时间范围过滤
+            const filteredMembers = searchedMembers
+                .map(member => ({
+                    ...member,
+                    daysUntil: getDaysUntilBirthday(member.birthday)
+                }))
+                .filter(member => member.daysUntil <= days)
+                .sort((a, b) => a.daysUntil - b.daysUntil);
+
+            document.getElementById('totalMembers').textContent = searchedMembers.length;
+            document.getElementById('upcomingCount').textContent = filteredMembers.length;
+
+            if (filteredMembers.length === 0) {
+                membersList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">${searchText ? '🔍' : '🎂'}</div>
+                        <p>${searchText ? `没有找到包含 "${searchInput.value}" 的成员` : `最近 ${days} 天内没有成员过生日`}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            membersList.innerHTML = filteredMembers.map(member => {
+                const isToday = member.daysUntil === 0;
+                const isSoon = member.daysUntil <= 3 && member.daysUntil > 0;
+                const tenureStr = member.joinDate ? formatTenure(member.joinDate) : '';
+                const age = getAge(member.birthday);
+                
+                let displayPeriod = member.period || '';
+                if (displayPeriod) {
+                    displayPeriod = displayPeriod.replace(/期期$/, '期');
+                }
+                
+                return `
+                    <div class="member-card ${isToday ? 'today' : ''}">
+                        <div class="member-info">
+                            <div class="member-avatar">
+                                ${member.name.charAt(0)}
+                            </div>
+                            <div class="member-details">
+                                <h3>${member.name} <span style="font-size: 14px; color: #6c757d; font-weight: normal;">${age}岁</span></h3>
+                                <div class="info-row">
+                                    ${displayPeriod ? `<span class="info-tag">${displayPeriod}</span>` : ''}
+                                </div>
+                                ${tenureStr ? `<p class="tenure">出道 ${tenureStr}</p>` : ''}
+                            </div>
+                        </div>
+                        <div class="member-birthday">
+                            <div class="birthday-date">
+                                ${String(member.birthday.getMonth() + 1).padStart(2, '0')}月
+                                ${String(member.birthday.getDate()).padStart(2, '0')}日
+                            </div>
+                            <div class="birthday-days ${isSoon ? 'soon' : ''}">
+                                ${isToday ? '今天过生日！' : `还有 ${member.daysUntil} 天`}
+                            </div>
+                            ${isToday ? '<div class="today-badge">🎉 今天</div>' : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showError(message) {
+            membersList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">⚠️</div>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
