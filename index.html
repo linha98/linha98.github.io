@@ -8461,6 +8461,12 @@ const membersData = [
             color: #667eea;
         }
 
+        .birthday-year {
+            font-size: 15px;
+            color: #667eea;
+            margin-top: 2px;
+        }
+
         .birthday-days {
             font-size: 14px;
             color: #6c757d;
@@ -8617,6 +8623,10 @@ const membersData = [
 
             .birthday-date {
                 font-size: 18px;
+            }
+
+            .birthday-year {
+                font-size: 11px;
             }
 
             .birthday-days {
@@ -8889,6 +8899,7 @@ const membersData = [
                                 ${String(member.birthday.getMonth() + 1).padStart(2, '0')}月
                                 ${String(member.birthday.getDate()).padStart(2, '0')}日
                             </div>
+                            <div class="birthday-year">${member.birthday.getFullYear()}年</div>
                             <div class="birthday-days ${isSoon ? 'soon' : ''}">
                                 ${isToday ? '今天过生日！' : `还有 ${member.daysUntil} 天`}
                             </div>
