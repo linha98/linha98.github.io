@@ -6338,7 +6338,7 @@ const membersData = [
   },
   {
     "name": "娜则乃",
-    "birthday": "2022-08-28",
+    "birthday": "2007-08-28",
     "period": "CKG48九期生",
     "debut": "2025-06-02",
     "joinYear": 2,
@@ -8670,6 +8670,16 @@ const membersData = [
                     <option value="tsh48">TSH48</option>
                 </select>
             </div>
+            <div class="select-wrapper">
+                <label>排序方式</label>
+                <select id="sortMethod">
+                    <option value="birthday" selected>按生日时间</option>
+                    <option value="age-asc">按年龄小→大</option>
+                    <option value="age-desc">按年龄大→小</option>
+                    <option value="debut-asc">按出道早→晚</option>
+                    <option value="debut-desc">按出道晚→早</option>
+                </select>
+            </div>
         </div>
 
         <div class="stats" id="stats">
@@ -8701,6 +8711,7 @@ const membersData = [
         const timeRange = document.getElementById('timeRange');
         const searchInput = document.getElementById('searchInput');
         const groupFilter = document.getElementById('groupFilter');
+        const sortMethod = document.getElementById('sortMethod');
         
         // 有效成员数据
         let validMembersData = [];
@@ -8737,6 +8748,10 @@ const membersData = [
         });
 
         groupFilter.addEventListener('change', () => {
+            displayMembers();
+        });
+
+        sortMethod.addEventListener('change', () => {
             displayMembers();
         });
 
@@ -8847,14 +8862,36 @@ const membersData = [
                 });
             }
             
-            // 再按时间范围过滤
-            const filteredMembers = searchedMembers
+            const currentSort = sortMethod.value;
+            const isDebutSort = currentSort === 'debut-asc' || currentSort === 'debut-desc';
+
+            let filteredMembers = searchedMembers
                 .map(member => ({
                     ...member,
                     daysUntil: getDaysUntilBirthday(member.birthday)
-                }))
-                .filter(member => member.daysUntil <= days)
-                .sort((a, b) => a.daysUntil - b.daysUntil);
+                }));
+
+            if (currentSort === 'birthday') {
+                filteredMembers = filteredMembers
+                    .filter(member => member.daysUntil <= days)
+                    .sort((a, b) => a.daysUntil - b.daysUntil);
+            } else if (currentSort === 'age-asc') {
+                filteredMembers = filteredMembers
+                    .filter(member => member.daysUntil <= days)
+                    .sort((a, b) => b.birthday - a.birthday);
+            } else if (currentSort === 'age-desc') {
+                filteredMembers = filteredMembers
+                    .filter(member => member.daysUntil <= days)
+                    .sort((a, b) => a.birthday - b.birthday);
+            } else if (currentSort === 'debut-asc') {
+                filteredMembers = filteredMembers
+                    .filter(member => member.daysUntil <= days)
+                    .sort((a, b) => a.joinDate - b.joinDate);
+            } else if (currentSort === 'debut-desc') {
+                filteredMembers = filteredMembers
+                    .filter(member => member.daysUntil <= days)
+                    .sort((a, b) => b.joinDate - a.joinDate);
+            }
 
             document.getElementById('totalMembers').textContent = searchedMembers.length;
             document.getElementById('upcomingCount').textContent = filteredMembers.length;
@@ -8892,6 +8929,7 @@ const membersData = [
                                     ${displayPeriod ? `<span class="info-tag">${displayPeriod}</span>` : ''}
                                 </div>
                                 ${tenureStr ? `<p class="tenure">出道 ${tenureStr}</p>` : ''}
+                                ${isDebutSort && member.joinDate ? `<p class="tenure">出道日期 ${member.joinDate.getFullYear()}年${String(member.joinDate.getMonth() + 1).padStart(2, '0')}月${String(member.joinDate.getDate()).padStart(2, '0')}日</p>` : ''}
                             </div>
                         </div>
                         <div class="member-birthday">
