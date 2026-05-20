@@ -8678,6 +8678,8 @@ const membersData = [
                     <option value="age-desc">按年龄大→小</option>
                     <option value="debut-asc">按出道早→晚</option>
                     <option value="debut-desc">按出道晚→早</option>
+                    <option value="debut-age-asc">按出道年龄小→大</option>
+                    <option value="debut-age-desc">按出道年龄大→小</option>
                 </select>
             </div>
         </div>
@@ -8730,6 +8732,13 @@ const membersData = [
                     }
                     if (member.debut && typeof member.debut === 'string') {
                         member.joinDate = new Date(member.debut);
+                    }
+                    // 计算出道年龄（debut - birthday），存为总天数便于排序
+                    if (member.joinDate && member.birthday) {
+                        const diffTime = member.joinDate.getTime() - member.birthday.getTime();
+                        member.debutAgeDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                    } else {
+                        member.debutAgeDays = null;
                     }
                 });
                 
@@ -8822,6 +8831,16 @@ const membersData = [
             return result;
         }
 
+        function formatDebutAge(debutAgeDays) {
+            if (debutAgeDays === null || debutAgeDays === undefined) return '';
+            const years = Math.floor(debutAgeDays / 365);
+            const days = debutAgeDays % 365;
+            let result = '';
+            if (years > 0) result += `${years}岁`;
+            if (days > 0 || years === 0) result += `${days}天`;
+            return result;
+        }
+
         function getAge(birthday) {
             const today = new Date();
             let age = today.getFullYear() - birthday.getFullYear();
@@ -8864,6 +8883,7 @@ const membersData = [
             
             const currentSort = sortMethod.value;
             const isDebutSort = currentSort === 'debut-asc' || currentSort === 'debut-desc';
+            const isDebutAgeSort = currentSort === 'debut-age-asc' || currentSort === 'debut-age-desc';
 
             let filteredMembers = searchedMembers
                 .map(member => ({
@@ -8891,6 +8911,16 @@ const membersData = [
                 filteredMembers = filteredMembers
                     .filter(member => member.daysUntil <= days)
                     .sort((a, b) => b.joinDate - a.joinDate);
+            } else if (currentSort === 'debut-age-asc') {
+                filteredMembers = filteredMembers
+                    .filter(member => member.daysUntil <= days)
+                    .filter(member => member.debutAgeDays !== null)
+                    .sort((a, b) => a.debutAgeDays - b.debutAgeDays);
+            } else if (currentSort === 'debut-age-desc') {
+                filteredMembers = filteredMembers
+                    .filter(member => member.daysUntil <= days)
+                    .filter(member => member.debutAgeDays !== null)
+                    .sort((a, b) => b.debutAgeDays - a.debutAgeDays);
             }
 
             document.getElementById('totalMembers').textContent = searchedMembers.length;
@@ -8930,6 +8960,7 @@ const membersData = [
                                 </div>
                                 ${tenureStr ? `<p class="tenure">出道 ${tenureStr}</p>` : ''}
                                 ${isDebutSort && member.joinDate ? `<p class="tenure">出道日期 ${member.joinDate.getFullYear()}年${String(member.joinDate.getMonth() + 1).padStart(2, '0')}月${String(member.joinDate.getDate()).padStart(2, '0')}日</p>` : ''}
+                                ${isDebutAgeSort && member.debutAgeDays !== null ? `<p class="tenure">出道年龄 ${formatDebutAge(member.debutAgeDays)}</p>` : ''}
                             </div>
                         </div>
                         <div class="member-birthday">
