@@ -26,10 +26,10 @@ check,name,period,page_birthday,reference_birthday,reference_source,reference_pa
 1,李美琪,SNH48九期生,2001/5/29,2000/5/29,AKB48 Wiki,Li MeiQi,https://akb48.fandom.com/wiki/Li_MeiQi,
 1,黄嘉怡,SHY48三期生,2002/4/5,2001/4/5,AKB48 Wiki,Huang JiaYi,https://akb48.fandom.com/wiki/Huang_JiaYi,
 ,魏小燕,CKG48二期生,1999/2/21,1997/2/21,AKB48 Wiki,Wei XiaoYan,https://akb48.fandom.com/wiki/Wei_XiaoYan,
-,杨宇馨,BEJ48四期生,1998/11/7,2000/11/7,AKB48 Wiki,Yang YuXin,https://akb48.fandom.com/wiki/Yang_YuXin,
+1,杨宇馨,BEJ48四期生,1998/11/7,2000/11/7,AKB48 Wiki,Yang YuXin,https://akb48.fandom.com/wiki/Yang_YuXin,
 1,曲美霖,BEJ48四期生,1996/11/18,1996/11/8,AKB48 Wiki,Qu MeiLin,https://akb48.fandom.com/wiki/Qu_MeiLin,官方接口也确认页面月日错误
 1,曹露丹,CKG48三期生,1998/5/23,2003/5/23,AKB48 Wiki,Cao LuDan,https://akb48.fandom.com/wiki/Cao_LuDan,
-,宁轲,BEJ48七期生,2000/5/2,1999/5/2,AKB48 Wiki,Ning Ke,https://akb48.fandom.com/wiki/Ning_Ke,
+1,宁轲,BEJ48七期生,2000/5/2,1999/5/2,AKB48 Wiki,Ning Ke,https://akb48.fandom.com/wiki/Ning_Ke,
 ,余芸萱,CKG48四期生,2000/9/4,2002/2/8,AKB48 Wiki,Yu YunXuan,https://akb48.fandom.com/wiki/Yu_YunXuan,
 ,李星彦,SNH48十四期生,2000/3/29,2001/3/29,AKB48 Wiki,Li XingYan,https://akb48.fandom.com/wiki/Li_XingYan,
 1,陈蓁蓁,BEJ48九期生,2000/5/12,2000/5/20,AKB48 Wiki,Chen ZhenZhen,https://akb48.fandom.com/wiki/Chen_ZhenZhen,官方接口也确认页面月日错误
@@ -40,12 +40,13 @@ check,name,period,page_birthday,reference_birthday,reference_source,reference_pa
 1,林恩同,GNZ48十一期生,2006/6/30,2006/6/3,AKB48 Wiki,Lin EnTong,https://akb48.fandom.com/wiki/Lin_EnTong,
 1,施未希,SNH48十七期生,2001/11/29,2002/11/29,AKB48 Wiki,Shi WeiXi,https://akb48.fandom.com/wiki/Shi_WeiXi,
 1,郭兆媛,GNZ48十三期生,2000/2/7,1999/2/7,AKB48 Wiki,Guo ZhaoYuan,https://akb48.fandom.com/wiki/Guo_ZhaoYuan,
-,叶溁语,GNZ48十三期生,2003/10/30,2002/10/30,AKB48 Wiki,Ye YingYu,https://akb48.fandom.com/wiki/Ye_YingYu,
+1,叶溁语,GNZ48十三期生,2003/10/30,2002/10/30,AKB48 Wiki,Ye YingYu,https://akb48.fandom.com/wiki/Ye_YingYu,
 ,朱一柠,BEJ48十二期生,2000/11/20,2002/11/20,AKB48 Wiki,Zhu YiNing,https://akb48.fandom.com/wiki/Zhu_YiNing,
 1,卢晨昕,SNH48十八期生,2002/7/6,2003/7/6,AKB48 Wiki,Lu ChenXin,https://akb48.fandom.com/wiki/Lu_ChenXin,
 1,陈珊玲,GNZ48十四期生,1999/6/30,2001/6/30,AKB48 Wiki,Chen ShanLing,https://akb48.fandom.com/wiki/Chen_ShanLing,
 ,陈韵佳,CKG48六期生,1999/12/12,2000/12/22,AKB48 Wiki,Chen YunJia,https://akb48.fandom.com/wiki/Chen_YunJia,
 ,刘星雨,CKG48六期生,2003/9/6,2002/9/6,AKB48 Wiki,Liu XingYu,https://akb48.fandom.com/wiki/Liu_XingYu,
+1,张莉莉,CKG48六期生,2005/6/23,2005/7/28,CKG48 official profile,Zhang LiLi,https://www.ckg48.com/member_details.html?sid=50087,官方接口当前 birth_day 为 07.28；年份沿用原记录并按你已确认的修正同步
 ,雷相菊,CGT48一期生,2002/5/8,2003/10/1,AKB48 Wiki,Lei XiangJu,https://akb48.fandom.com/wiki/Lei_XiangJu,官方接口确认正确月日为 10.01；中文维基年份为 2003，年份来源有冲突
 1,齐灵泉,CGT48一期生,2006/8/25,2006/10/16,AKB48 Wiki,Qi LingQuan,https://akb48.fandom.com/wiki/Qi_LingQuan,官方接口也确认页面月日错误
 1,徐钰涵,CGT48一期生,2003/6/14,2003/1/14,AKB48 Wiki,Xu YuHan,https://akb48.fandom.com/wiki/Xu_YuHan,官方接口也确认页面月日错误
